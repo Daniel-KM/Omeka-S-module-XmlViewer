@@ -57,4 +57,28 @@ class Module extends AbstractModule
             );
         }
     }
+
+    protected function postInstall(): void
+    {
+        $this->updateWhitelist();
+    }
+
+    protected function updateWhitelist(): void
+    {
+        $settings = $this->getServiceLocator()->get('Omeka\Settings');
+
+        $whitelist = $settings->get('media_type_whitelist', []);
+        $mediaTypes = require __DIR__ . '/data/media-types/media-type-identifiers.php';
+        // Manage an exception.
+        $mediaTypes[] = 'application/vnd.recordare.musicxml';
+        sort($mediaTypes);
+        $whitelist = array_values(array_unique(array_merge(array_values($whitelist), $mediaTypes)));
+        $settings->set('media_type_whitelist', $whitelist);
+
+        $whitelist = $settings->get('extension_whitelist', []);
+        $extensions = require __DIR__ . '/data/media-types/media-type-extensions.php';
+        sort($extensions);
+        $whitelist = array_values(array_unique(array_merge(array_values($whitelist), $extensions)));
+        $settings->set('extension_whitelist', $whitelist);
+    }
 }
