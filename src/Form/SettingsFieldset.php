@@ -17,7 +17,7 @@ class SettingsFieldset extends Fieldset
                 'type' => ArrayTextarea::class,
                 'options' => [
                     'label' => 'Render by xml media-type', // @translate
-                    'info' => 'Set the rendering as a stylesheet (xsl or css, full url or asset file) of a value ("text", "original", "no") to use by media-type, one by line. Other xml types are rendered as a download link. In all cases, they should be allowed. You may set the precise media-types with module Bulk Edit too.', // @translate
+                    'info' => 'Set the rendering as a stylesheet (xsl or css, full url or asset file) or a specific format ("text", "original", "no") to use by media-type, one by line. Other xml types are rendered as a download link. You may set precise media-types with module Bulk Edit too.', // @translate
                     'documentation' => 'https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer#usage',
                     'as_key_value' => true,
                 ],

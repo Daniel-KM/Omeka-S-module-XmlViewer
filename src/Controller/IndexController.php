@@ -48,7 +48,7 @@ class IndexController extends AbstractActionController
         $originalUrl = $resource->originalUrl();
         if (!$originalUrl) {
             throw new InvalidArgumentException((string) new Message(
-                'Media #%s has a no original file.', // @translate
+                'Media #%s has no original file url.', // @translate
                 $id
             ));
         }
