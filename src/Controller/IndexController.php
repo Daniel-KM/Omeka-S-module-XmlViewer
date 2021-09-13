@@ -44,6 +44,16 @@ class IndexController extends AbstractActionController
             ));
         }
 
+        $mediaType = $resource->mediaType();
+
+        $allowed = require dirname(__DIR__, 2) . '/data/media-types/media-type-xml.php';
+        if (!in_array($mediaType, $allowed)) {
+            throw new InvalidArgumentException((string) new Message(
+                'Media #%s has a media-type "%s" that is not managed or enabled for this viewer.', // @translate
+                $id, $mediaType
+            ));
+        }
+
         $originalUrl = $resource->originalUrl();
         if (!$originalUrl) {
             throw new InvalidArgumentException((string) new Message(
