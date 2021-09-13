@@ -30,7 +30,8 @@ class Xml implements RendererInterface
      *   - template: the partial to use
      *   - attributes: set the attributes of the iframe as a string; the class
      *   should contain "xml-viewer" and a height should be set.
-     * @return string
+     * @return string The output is the media link when the xml is not managed.
+     * @see \Omeka\Media\FileRenderer\FallbackRenderer::render()
      */
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = [])
     {
@@ -45,8 +46,19 @@ class Xml implements RendererInterface
 
         $vars = [
             'resource' => $media,
+            'media' => $media,
             'options' => $options,
         ];
+
+        // Check the support of the media: Omeka uses the extension when media
+        // type is not supported, but the extension is not the real type, in
+        // particular for xml.
+        // Normally already checked in controller, that returns fallback too.
+        $mediaType = $media->mediaType();
+        $allowed = require dirname(__DIR__, 3) . '/data/media-types/media-type-xml.php';
+        if (!in_array($mediaType, $allowed)) {
+            $template = 'common/xml-fallback';
+        }
 
         unset($options['template']);
         return $template !== self::PARTIAL_NAME && $view->resolver($template)

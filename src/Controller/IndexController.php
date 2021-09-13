@@ -3,6 +3,7 @@
 namespace XmlViewer\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use Omeka\File\Exception\InvalidArgumentException;
 use Omeka\Stdlib\Message;
 
@@ -39,18 +40,8 @@ class IndexController extends AbstractActionController
 
         if (!$resource->hasOriginal()) {
             throw new InvalidArgumentException((string) new Message(
-                'Media #%s has a no original file.', // @translate
+                'Media #%s has no original file.', // @translate
                 $id
-            ));
-        }
-
-        $mediaType = $resource->mediaType();
-
-        $allowed = require dirname(__DIR__, 2) . '/data/media-types/media-type-xml.php';
-        if (!in_array($mediaType, $allowed)) {
-            throw new InvalidArgumentException((string) new Message(
-                'Media #%s has a media-type "%s" that is not managed or enabled for this viewer.', // @translate
-                $id, $mediaType
             ));
         }
 
@@ -72,6 +63,19 @@ class IndexController extends AbstractActionController
         }
         $filename = $resource->source() ?: basename($filepath);
         $filesize = (int) $resource->size();
+
+        $mediaType = $resource->mediaType();
+        $allowed = require dirname(__DIR__, 2) . '/data/media-types/media-type-xml.php';
+        if (!in_array($mediaType, $allowed)) {
+            $view = new ViewModel([
+                'resource' => $resource,
+                'media' => $resource,
+                'options' => [],
+            ]);
+            return $view
+                ->setTemplate('common/xml-fallback')
+                ->setTerminal(true);
+        }
 
         // In order to be displayed as xml in an iframe, the content-type should be "text/plain".
         $mediaType = 'text/plain';
