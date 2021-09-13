@@ -38,11 +38,18 @@ if (!class_exists(\Generic\AbstractModule::class)) {
 }
 
 use Generic\AbstractModule;
+use Laminas\Mvc\MvcEvent;
 use Omeka\Module\Exception\ModuleCannotInstallException;
 
 class Module extends AbstractModule
 {
     const NAMESPACE = __NAMESPACE__;
+
+    public function onBootstrap(MvcEvent $event): void
+    {
+        parent::onBootstrap($event);
+        $this->addAclRules();
+    }
 
     protected function preInstall(): void
     {
@@ -61,6 +68,23 @@ class Module extends AbstractModule
     protected function postInstall(): void
     {
         $this->updateWhitelist();
+    }
+
+    protected function addAclRules(): void
+    {
+        /**
+         * @var \Omeka\Permissions\Acl $acl
+         *
+         * @see \Omeka\Service\AclFactory
+         */
+        $this->getServiceLocator()->get('Omeka\Acl')
+            // Everybody can view a xml.
+            ->allow(
+                null,
+                [
+                    Controller\IndexController::class,
+                ]
+            );
     }
 
     protected function updateWhitelist(): void

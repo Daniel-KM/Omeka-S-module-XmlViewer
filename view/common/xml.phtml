@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\MediaRepresentation $resource
+ * @var array $options
+ */
+
+$plugins = $this->getHelperPluginManager();
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+
+$url = empty($options['native'])
+    ? $plugins->get('urlPlainTextFile')->__invoke($resource)
+    : $resource->originalUrl();
+if (!$url) return;
+
+$attrs = $options['attributes'];
+?>
+
+<iframe id="xml-viewer-<?= $resource->id() ?>" src="<?= $escapeAttr($url) ?>" <?= $attrs ?> ></iframe>
