@@ -61,12 +61,21 @@ class IndexController extends AbstractActionController
                 $resource->id()
             ));
         }
-        $filename = $resource->source() ?: basename($filepath);
-        $filesize = (int) $resource->size();
 
         $mediaType = $resource->mediaType();
+        $renderings = $this->settings()->get('xmlviewer_renderings', []);
+        $rendering = $renderings[$mediaType] ?? '';
+        $filesize = (int) $resource->size();
+
+        // TODO Move this list to the config.
         $allowed = require dirname(__DIR__, 2) . '/data/media-types/media-type-xml.php';
-        if (!in_array($mediaType, $allowed)) {
+        if (empty($filesize)
+            || !$mediaType
+            || empty($rendering)
+            || $rendering === 'false'
+            || $rendering === 'no'
+            || !in_array($mediaType, $allowed)
+        ) {
             $view = new ViewModel([
                 'resource' => $resource,
                 'media' => $resource,
@@ -77,8 +86,32 @@ class IndexController extends AbstractActionController
                 ->setTerminal(true);
         }
 
-        // In order to be displayed as xml in an iframe, the content-type should be "text/plain".
+        // In order to be displayed as xml in an iframe, the content-type should
+        // be "text/plain". "text/html" skips the xml instructions. "text/xml" or
+        // "application/xml" are silently read like html, even if it works in a
+        // full page, except with a stylesheet xsl.
+
+        // With Chrome, a stylesheet at the end of an xml file works in a iframe,
+        // but not in full page, so the stylesheet should be inserted after the
+        // xml header. But the length of the header is not fixed, there may be
+        // spaces, not utf-8, etc.
+
+        // So if there is no memory issue (check length), it should be added at
+        // the position of the first ">".
+
+        $filename = $resource->source() ?: basename($filepath);
+
         $mediaType = 'text/plain';
+        $piStylesheet = null;
+        if (!in_array($rendering, ['text', 'plain', 'text/plain', 'true'])) {
+            $extension = strtolower(pathinfo($rendering, PATHINFO_EXTENSION));
+            if ($extension === 'css' || $extension === 'xsl') {
+                // Same as "text/xml".
+                $mediaType = 'application/xml';
+                $stylesheetUrl = $this->viewHelpers()->get('assetUrl')->__invoke($rendering, 'XmlViewer', true);
+                $piStylesheet = sprintf("\n" . '<?xml-stylesheet type="text/%s" href="%s" ?>', $extension, $stylesheetUrl);
+            }
+        }
 
         $dispositionMode = 'inline';
 
@@ -88,7 +121,7 @@ class IndexController extends AbstractActionController
         $response->getHeaders()
             ->addHeaderLine(sprintf('Content-Type: %s', $mediaType))
             ->addHeaderLine(sprintf('Content-Disposition: %s; filename="%s"', $dispositionMode, $filename))
-            ->addHeaderLine(sprintf('Content-Length: %s', $filesize))
+            ->addHeaderLine(sprintf('Content-Length: %s', $filesize + strlen($piStylesheet)))
             ->addHeaderLine('Content-Transfer-Encoding', 'binary')
             // Use this to open files directly.
             ->addHeaderLine('Cache-Control: private');
@@ -102,7 +135,29 @@ class IndexController extends AbstractActionController
         while (ob_get_level()) {
             ob_end_clean();
         }
-        readfile($filepath);
+
+        if ($piStylesheet) {
+            // file_get_contents and file_put_contents are not used to avoid
+            // memory issue with big xml files.
+            // TODO Check XmlWriter?
+            $handle = fopen($filepath, 'rb');
+            $content = fread($handle, 8192);
+            $pos = mb_strpos($content, '>');
+            // A xml file without a ">" in the first 8192 bytes does not exist.
+            if ($pos === false) {
+                fclose($handle);
+                readfile($filepath);
+            } else {
+                $length = $pos + 1;
+                rewind($handle);
+                echo fread($handle, $length);
+                echo $piStylesheet;
+                echo fread($handle, $filesize - $length);
+                fclose($handle);
+            }
+        } else {
+            readfile($filepath);
+        }
 
         // Return response to avoid default view rendering and to manage events.
         return $response;

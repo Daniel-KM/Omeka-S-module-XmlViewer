@@ -3,6 +3,8 @@
 /**
  * List of useful renderable media types of xml files.
  *
+ * @todo Move this file into the config of the module (file or form).
+ *
  * @var array
  */
 return [

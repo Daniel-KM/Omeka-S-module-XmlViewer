@@ -11,4 +11,4 @@
 // Default output when the xml specific media-type is not managed.
 ?>
 
-<?= $this->hyperlink($media->filename(), $media->originalUrl()) ?>
+<?= $this->hyperlink($media->filename(), $media->originalUrl(), ['type' => $media->mediaType(), 'target' => '_blank']) ?>

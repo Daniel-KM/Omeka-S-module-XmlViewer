@@ -20,6 +20,11 @@ return [
             'urlPlainTextFile' => View\Helper\UrlPlainTextFile::class,
         ],
     ],
+    'form_elements' => [
+        'invokables' => [
+            Form\SettingsFieldset::class => Form\SettingsFieldset::class,
+        ],
+    ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => Service\Controller\IndexControllerFactory::class,
@@ -60,6 +65,14 @@ return [
                         ],
                     ],
                 ],
+            ],
+        ],
+    ],
+    'xmlviewer' => [
+        'settings' => [
+            'xmlviewer_renderings' => [
+                'text/xml' => 'text',
+                'application/xml' => 'text',
             ],
         ],
     ],
