@@ -104,25 +104,29 @@ class IndexController extends AbstractActionController
 
         $filename = $resource->source() ?: basename($filepath);
 
+        $contentMediaType = 'text/plain';
+        $piStylesheet = '';
         if ($rendering === 'original') {
             // The media type is forced because some browsers on some operating
             // systems force downloading for precise xml media-types.
             // "text/xml" and "application/xml" are synonymous for browsers.
             $contentMediaType = 'application/xml';
-            $piStylesheet = '';
         } elseif (!in_array($rendering, ['text', 'plain', 'text/plain', 'true'])) {
-            $extension = strtolower(pathinfo($rendering, PATHINFO_EXTENSION));
-            if ($extension === 'css' || $extension === 'xsl') {
-                $contentMediaType = 'application/xml';
-                $stylesheetUrl = $this->viewHelpers()->get('assetUrl')->__invoke($rendering, 'XmlViewer', true);
-                $piStylesheet = sprintf("\n" . '<?xml-stylesheet type="text/%s" href="%s" ?>', $extension, $stylesheetUrl);
-            } else {
-                $contentMediaType = 'text/plain';
-                $piStylesheet = '';
+            $assetUrl = $this->viewHelpers()->get('assetUrl');
+            foreach (array_filter(array_map('trim', explode('|', $rendering))) as $stylesheet) {
+                $extension = strtolower(pathinfo($rendering, PATHINFO_EXTENSION));
+                if (in_array($extension, ['css', 'xsl', 'xslt'])
+                    && substr($stylesheet, 0, 1) !== '/'
+                    && substr($stylesheet, 0, 8) !== 'https://'
+                    && substr($stylesheet, 0, 7) !== 'http://'
+                ) {
+                    $stylesheet = $assetUrl($stylesheet, 'XmlViewer', true);
+                    $piStylesheet .= sprintf("\n" . '<?xml-stylesheet type="text/%s" href="%s" ?>', $extension === 'xslt' ? 'xsl' : $extension, $stylesheet);
+                }
             }
-        } else {
-            $contentMediaType = 'text/plain';
-            $piStylesheet = '';
+            if ($piStylesheet) {
+                $contentMediaType = 'application/xml';
+            }
         }
 
         $dispositionMode = 'inline';
