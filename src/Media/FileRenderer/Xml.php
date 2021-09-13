@@ -31,9 +31,10 @@ class Xml implements RendererInterface
      * @param PhpRenderer $view,
      * @param MediaRepresentation $media
      * @param array $options These options are managed for sites:
-     *   - template: the partial to use
+     *   - template: the partial to use.
      *   - attributes: set the attributes of the iframe as a array; the default
-     *     class "xml-viewer" is added,and default height and width too (style).
+     *     class "xml-viewer" is added and default height and width too (style).
+     *   - original: use original file.
      * @return string The output is the media link when the xml is not managed.
      * @see \Omeka\Media\FileRenderer\FallbackRenderer::render()
      */
@@ -65,7 +66,7 @@ class Xml implements RendererInterface
 
         $options['attributes']['id'] = 'xml-viewer-' . $media->id();
 
-        $options['attributes']['src'] = empty($options['native'])
+        $options['attributes']['src'] = empty($options['original'])
             ? $plugins->get('urlPlainTextFile')->__invoke($media)
             : $media->originalUrl();
 

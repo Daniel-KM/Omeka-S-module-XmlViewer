@@ -104,16 +104,25 @@ class IndexController extends AbstractActionController
 
         $filename = $resource->source() ?: basename($filepath);
 
-        $mediaType = 'text/plain';
-        $piStylesheet = null;
-        if (!in_array($rendering, ['text', 'plain', 'text/plain', 'true'])) {
+        if ($rendering === 'original') {
+            // The media type is forced because some browsers on some operating
+            // systems force downloading for precise xml media-types.
+            // "text/xml" and "application/xml" are synonymous for browsers.
+            $contentMediaType = 'application/xml';
+            $piStylesheet = '';
+        } elseif (!in_array($rendering, ['text', 'plain', 'text/plain', 'true'])) {
             $extension = strtolower(pathinfo($rendering, PATHINFO_EXTENSION));
             if ($extension === 'css' || $extension === 'xsl') {
-                // Same as "text/xml".
-                $mediaType = 'application/xml';
+                $contentMediaType = 'application/xml';
                 $stylesheetUrl = $this->viewHelpers()->get('assetUrl')->__invoke($rendering, 'XmlViewer', true);
                 $piStylesheet = sprintf("\n" . '<?xml-stylesheet type="text/%s" href="%s" ?>', $extension, $stylesheetUrl);
+            } else {
+                $contentMediaType = 'text/plain';
+                $piStylesheet = '';
             }
+        } else {
+            $contentMediaType = 'text/plain';
+            $piStylesheet = '';
         }
 
         $dispositionMode = 'inline';
@@ -122,7 +131,7 @@ class IndexController extends AbstractActionController
         $response = $this->getResponse();
         // Write headers.
         $response->getHeaders()
-            ->addHeaderLine(sprintf('Content-Type: %s', $mediaType))
+            ->addHeaderLine(sprintf('Content-Type: %s', $contentMediaType))
             ->addHeaderLine(sprintf('Content-Disposition: %s; filename="%s"', $dispositionMode, $filename))
             ->addHeaderLine(sprintf('Content-Length: %s', $filesize + strlen($piStylesheet)))
             ->addHeaderLine('Content-Transfer-Encoding', 'binary')
