@@ -70,14 +70,11 @@ class IndexController extends AbstractActionController
         $rendering = $renderings[$mediaType] ?? '';
         $filesize = (int) $resource->size();
 
-        // TODO Move this list to the config.
-        $allowed = require dirname(__DIR__, 2) . '/data/media-types/media-type-xml.php';
         if (empty($filesize)
             || !$mediaType
             || empty($rendering)
             || $rendering === 'false'
             || $rendering === 'no'
-            || !in_array($mediaType, $allowed)
         ) {
             $view = new ViewModel([
                 'resource' => $resource,

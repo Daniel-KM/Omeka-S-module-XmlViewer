@@ -2,8 +2,6 @@
 
 namespace XmlViewer;
 
-$allowedMediaTypes = require dirname(__DIR__) . '/data/media-types/media-type-xml.php';
-
 return [
     'service_manager' => [
         'factories' => [
@@ -36,7 +34,6 @@ return [
         'invokables' => [
             'xml' => Media\FileRenderer\Xml::class,
         ]
-        + array_fill_keys($allowedMediaTypes, Media\FileRenderer\Xml::class),
     ],
     'router' => [
         'routes' => [

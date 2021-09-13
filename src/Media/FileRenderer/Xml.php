@@ -76,16 +76,6 @@ class Xml implements RendererInterface
             'options' => $options,
         ];
 
-        // Check the support of the media: Omeka uses the extension when media
-        // type is not supported, but the extension is not the real type, in
-        // particular for xml.
-        // Normally already checked in controller, that returns fallback too.
-        $mediaType = $media->mediaType();
-        $allowed = require dirname(__DIR__, 3) . '/data/media-types/media-type-xml.php';
-        if (!in_array($mediaType, $allowed)) {
-            $template = 'common/xml-fallback';
-        }
-
         unset($options['template']);
         $partial = $plugins->get('partial');
         return $template !== self::PARTIAL_NAME && $view->resolver($template)
