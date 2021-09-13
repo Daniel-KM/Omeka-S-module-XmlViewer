@@ -23,6 +23,7 @@ return [
     'form_elements' => [
         'invokables' => [
             Form\SettingsFieldset::class => Form\SettingsFieldset::class,
+            Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
         ],
     ],
     'controllers' => [
@@ -39,6 +40,38 @@ return [
     ],
     'router' => [
         'routes' => [
+            'site' => [
+                'child_routes' => [
+                    'xml' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/xml',
+                            'defaults' => [
+                                '__NAMESPACE__' => Controller\IndexController::class,
+                                'controller' => Controller\IndexController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        'may_terminate' => false,
+                        'child_routes' => [
+                            // Id can be a clean url id ("/" must be escaped, like in iiif).
+                            'resource-id' => [
+                                'type' => \Laminas\Router\Http\Segment::class,
+                                'options' => [
+                                    'route' => '/:id',
+                                    'constraints' => [
+                                        'id' => '[^\/]+',
+                                    ],
+                                    'defaults' => [
+                                        'action' => 'show',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            // Admin view and generic public are the same.
             'xml' => [
                 'type' => \Laminas\Router\Http\Literal::class,
                 'options' => [
@@ -70,6 +103,12 @@ return [
     ],
     'xmlviewer' => [
         'settings' => [
+            'xmlviewer_renderings' => [
+                'text/xml' => 'text',
+                'application/xml' => 'text',
+            ],
+        ],
+        'site_settings' => [
             'xmlviewer_renderings' => [
                 'text/xml' => 'text',
                 'application/xml' => 'text',

@@ -62,8 +62,11 @@ class IndexController extends AbstractActionController
             ));
         }
 
+        $siteSlug = $this->params('site-slug');
+        $renderings = $siteSlug
+           ? $this->siteSettings()->get('xmlviewer_renderings', [])
+           : $this->settings()->get('xmlviewer_renderings', []);
         $mediaType = $resource->mediaType();
-        $renderings = $this->settings()->get('xmlviewer_renderings', []);
         $rendering = $renderings[$mediaType] ?? '';
         $filesize = (int) $resource->size();
 

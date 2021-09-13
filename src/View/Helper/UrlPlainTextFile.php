@@ -11,13 +11,23 @@ class UrlPlainTextFile extends AbstractHelper
      * Get the url of the dynamic xml to html converter.
      *
      * @param AbstractResourceEntityRepresentation|string $resourceOrUrl
+     * @param bool|null $genericUrl If null or false, use the site url, else use
+     *   the generic one.
      */
-    public function __invoke($resourceOrUrl): ?string
+    public function __invoke($resourceOrUrl, ?bool $genericUrl = null): ?string
     {
+        $plugins = $this->getView()->getHelperPluginManager();
+        $url = $plugins->get('url');
+
+        $siteSlug = $genericUrl ? '' : $plugins->get('params')->fromRoute('site-slug');
         if (is_string($resourceOrUrl)) {
-            return $this->getView()->url('xml', [], ['source' => $resourceOrUrl]);
+            return $genericUrl || !$siteSlug
+                ? $url('xml', [], ['source' => $resourceOrUrl])
+                : $url('site/xml', ['site-slug' => $siteSlug], ['source' => $resourceOrUrl]);
         } elseif (is_object($resourceOrUrl) && $resourceOrUrl instanceof AbstractResourceEntityRepresentation) {
-            return $this->getView()->url('xml/resource-id', ['id' => $resourceOrUrl->id()]);
+            return $genericUrl || !$siteSlug
+                ? $url('xml/resource-id', ['id' => $resourceOrUrl->id()])
+                : $url('site/xml/resource-id', ['site-slug' => $siteSlug, 'id' => $resourceOrUrl->id()]);
         }
         return null;
     }
