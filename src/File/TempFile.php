@@ -60,8 +60,13 @@ class TempFile extends \Omeka\File\TempFile
                 break;
             }
 
+            // To be improved or skipped.
             if ($reader->nodeType === XMLReader::PI
-                && !in_array($reader->name, ['xml-stylesheet', 'oxygen'])
+                && !in_array($reader->name, [
+                    'xml-model',
+                    'xml-stylesheet',
+                    'oxygen',
+                ])
             ) {
                 $matches = [];
                 if (preg_match('~href="(.+?)"~mi', $reader->value, $matches)) {
