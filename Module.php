@@ -38,8 +38,23 @@ if (!class_exists(\Generic\AbstractModule::class)) {
 }
 
 use Generic\AbstractModule;
+use Omeka\Module\Exception\ModuleCannotInstallException;
 
 class Module extends AbstractModule
 {
     const NAMESPACE = __NAMESPACE__;
+
+    protected function preInstall(): void
+    {
+        $services = $this->getServiceLocator();
+        $t = $services->get('MvcTranslator');
+
+        // Check if xml and xslt reader are available.
+        if (!class_exists('XSLTProcessor')) {
+            throw new ModuleCannotInstallException(
+                $t->translate('The module requires the php extension "xsl".') // @translate
+                    . ' ' . $t->translate('See module’s installation documentation.') // @translate
+            );
+        }
+    }
 }
