@@ -41,6 +41,8 @@ use Generic\AbstractModule;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
 use Omeka\Module\Exception\ModuleCannotInstallException;
+use Omeka\Mvc\Controller\Plugin\Messenger;
+use Omeka\Stdlib\Message;
 
 class Module extends AbstractModule
 {
@@ -69,13 +71,32 @@ class Module extends AbstractModule
     protected function postInstall(): void
     {
         $this->updateWhitelist();
+
+        $messenger = new Messenger();
+        $message = new Message(
+            'To render xml, map each specific xml media-type with a css or xsl in settings and site settings.' // @translate
+        );
+        $messenger->addSuccess($message);
+
+        if ($this->isModuleActive('BulkEdit')) {
+            $message = new Message(
+                'To specify a precise xml media-type, for example "application/tei+xml" instead of "application/xml", batch edit them.', // @translate
+            );
+        } else {
+            $message = new Message(
+                'To specify a precise xml media-type, for example "application/tei+xml" instead of "application/xml", batch edit them with module %sBulk Edit%s.', // @translate
+                '<a href="https://gitlab.com/Daniel-KM/Omeka-S-module-BulkEdit">',
+                '</a>'
+            );
+            $message->setEscapeHtml(false);
+        }
+        $messenger->addWarning($message);
     }
 
     protected function addAclRules(): void
     {
         /**
          * @var \Omeka\Permissions\Acl $acl
-         *
          * @see \Omeka\Service\AclFactory
          */
         $this->getServiceLocator()->get('Omeka\Acl')
