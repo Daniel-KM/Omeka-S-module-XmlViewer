@@ -101,14 +101,14 @@ return [
     'xmlviewer' => [
         'settings' => [
             'xmlviewer_renderings' => [
-                'text/xml' => 'text',
-                'application/xml' => 'text',
+                'text/xml' => 'xsl/xml-html.xslt',
+                'application/xml' => 'xsl/xml-html.xslt',
             ],
         ],
         'site_settings' => [
             'xmlviewer_renderings' => [
-                'text/xml' => 'text',
-                'application/xml' => 'text',
+                'text/xml' => 'xsl/xml-html.xslt',
+                'application/xml' => 'xsl/xml-html.xslt',
             ],
         ],
     ],

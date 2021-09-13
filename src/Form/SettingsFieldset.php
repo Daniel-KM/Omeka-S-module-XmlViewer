@@ -25,7 +25,7 @@ class SettingsFieldset extends Fieldset
                     'id' => 'xmlviewer_renderings',
                     'rows' => 5,
                     'placeholder' => 'text/xml = text
-application/xml = text
+application/xml = xsl/xml-html.xslt
 ',
                 ],
             ]);
