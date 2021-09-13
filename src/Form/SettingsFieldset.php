@@ -26,6 +26,7 @@ class SettingsFieldset extends Fieldset
                     'rows' => 5,
                     'placeholder' => 'text/xml = text
 application/xml = xsl/xml-html.xslt
+application/tei+xml = vendor/teinte/tei2html.xsl
 ',
                 ],
             ]);
