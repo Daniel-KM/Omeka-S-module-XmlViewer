@@ -3,4 +3,9 @@
 namespace XmlViewer;
 
 return [
+    'service_manager' => [
+        'factories' => [
+            'Omeka\File\TempFileFactory' => Service\File\TempFileFactoryFactory::class,
+        ],
+    ],
 ];
