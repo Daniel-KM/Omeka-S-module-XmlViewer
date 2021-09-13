@@ -2409,7 +2409,7 @@ Centralize some html attribute policy, especially for id, and class
   </xsl:template>
   <!-- @id, @lang, réécriture de certains attributs standard pour xhtml -->
   <xsl:template match="@xml:lang | @xml:id">
-    <xsl:variable name="id0"> '":,; </xsl:variable>
+    <xsl:variable name="id0"> '":,;. /\</xsl:variable>
     <xsl:attribute name="{local-name(.)}">
       <xsl:value-of select="translate(., $id0, '')"/>
     </xsl:attribute>

@@ -709,9 +709,9 @@ Gobal TEI parameters and variables are divided in different categories
   <xsl:template name="id">
     <xsl:apply-templates select="." mode="id"/>
   </xsl:template>
-    
+
   <xsl:template match="tei:persName" mode="id">
-    <xsl:variable name="id0"> '":,; /\</xsl:variable>
+    <xsl:variable name="id0"> '":,;. /\</xsl:variable>
    <xsl:choose>
       <xsl:when test="@xml:id">
         <xsl:value-of select="translate(@xml:id, $id0, '')"/>
@@ -733,7 +733,7 @@ Gobal TEI parameters and variables are divided in different categories
     </xsl:if>
     -->
     <xsl:param name="suffix"/>
-    <xsl:variable name="id0"> '":,; /\</xsl:variable>
+    <xsl:variable name="id0"> '":,;. /\</xsl:variable>
     <xsl:value-of select="$prefix"/>
     <xsl:choose>
       <xsl:when test="@xml:id">
