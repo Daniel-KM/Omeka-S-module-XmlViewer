@@ -17,8 +17,12 @@ class Xml implements RendererInterface
      * @var array
      */
     protected $defaultOptions = [
-        'attributes' => 'class="xml-viewer" allowfullscreen="allowfullscreen" style="height: 70vh; width: 100%" frameborder="0"',
         'template' => self::PARTIAL_NAME,
+        'attributes' => [
+            'class' => 'xml-viewer',
+            'allow' => 'fullscreen',
+            'style' => 'height: 70vh; width: 100%; border: none;',
+        ],
     ];
 
     /**
@@ -28,21 +32,42 @@ class Xml implements RendererInterface
      * @param MediaRepresentation $media
      * @param array $options These options are managed for sites:
      *   - template: the partial to use
-     *   - attributes: set the attributes of the iframe as a string; the class
-     *   should contain "xml-viewer" and a height should be set.
+     *   - attributes: set the attributes of the iframe as a array; the default
+     *     class "xml-viewer" is added,and default height and width too (style).
      * @return string The output is the media link when the xml is not managed.
      * @see \Omeka\Media\FileRenderer\FallbackRenderer::render()
      */
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = [])
     {
+        $plugins = $view->getHelperPluginManager();
+
         $status = $view->status();
         if ($status->isSiteRequest()) {
             $template = $options['template'] ?? $this->defaultOptions['template'];
-            $options['attributes'] = $options['attributes'] ?? $this->defaultOptions['attributes'];
+            if (empty($options['attributes'])) {
+                $options['attributes'] = $this->defaultOptions['attributes'];
+            } else {
+                $escapeAttr = $plugins->get('escapeHtmlAttr');
+                foreach ($options['attributes'] as $name => $value) {
+                    if ($value === false || preg_match('/[^\w:.-]/', $name)) {
+                        unset($options['attributes'][$name]);
+                    } elseif ($value === true) {
+                        $options['attributes'][$name] = $name;
+                    } else {
+                        $options['attributes'][$name] = $escapeAttr($value);
+                    }
+                }
+            }
         } else {
             $template = $this->defaultOptions['template'];
             $options['attributes'] = $this->defaultOptions['attributes'];
         }
+
+        $options['attributes']['id'] = 'xml-viewer-' . $media->id();
+
+        $options['attributes']['src'] = empty($options['native'])
+            ? $plugins->get('urlPlainTextFile')->__invoke($media)
+            : $media->originalUrl();
 
         $vars = [
             'resource' => $media,
@@ -61,8 +86,9 @@ class Xml implements RendererInterface
         }
 
         unset($options['template']);
+        $partial = $plugins->get('partial');
         return $template !== self::PARTIAL_NAME && $view->resolver($template)
-            ? $view->partial($template, $vars)
-            : $view->partial(self::PARTIAL_NAME, $vars);
+            ? $partial($template, $vars)
+            : $partial(self::PARTIAL_NAME, $vars);
     }
 }

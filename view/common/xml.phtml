@@ -2,18 +2,13 @@
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\MediaRepresentation $resource
+ * @var \Omeka\Api\Representation\MediaRepresentation $media
  * @var array $options
  */
 
-$plugins = $this->getHelperPluginManager();
-$escapeAttr = $plugins->get('escapeHtmlAttr');
-
-$url = empty($options['native'])
-    ? $plugins->get('urlPlainTextFile')->__invoke($resource)
-    : $resource->originalUrl();
-if (!$url) return;
-
-$attrs = $options['attributes'];
+// User attribute names and values are already escaped.
+$attrs = '';
+foreach ($options['attributes'] as $name => $value) $attrs .= ' ' . $name . '="' . $value . '"';
 ?>
 
-<iframe id="xml-viewer-<?= $resource->id() ?>" src="<?= $escapeAttr($url) ?>" <?= $attrs ?> ></iframe>
+<iframe<?= $attrs ?>></iframe>
