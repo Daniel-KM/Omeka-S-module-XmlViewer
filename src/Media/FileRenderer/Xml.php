@@ -58,6 +58,9 @@ class Xml implements RendererInterface
                         $options['attributes'][$name] = $escapeAttr($value);
                     }
                 }
+                if (empty($options['attributes']['class'])) {
+                    $options['attributes']['class'] = 'xml-viewer';
+                }
             }
         } else {
             $template = $this->defaultOptions['template'];
@@ -69,6 +72,15 @@ class Xml implements RendererInterface
         $options['attributes']['src'] = empty($options['original'])
             ? $plugins->get('urlPlainTextFile')->__invoke($media)
             : $media->originalUrl();
+
+        $mediaType = (string) $media->mediaType();
+        if (strpos($options['attributes']['class'], 'xml-viewer') === false) {
+            $options['attributes']['class'] = 'xml-viewer ' . $options['attributes']['class'];
+        }
+        if (!in_array($mediaType, ['', 'text/xml', 'application/xml'])) {
+            $options['attributes']['class'] .= ' '
+                . str_replace(['vnd.', '+', '.', ';'], ['', '-', '-', '-'], substr($mediaType, strpos($mediaType, '/') + 1));
+        }
 
         $vars = [
             'resource' => $media,
