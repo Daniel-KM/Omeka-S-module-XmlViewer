@@ -21,7 +21,7 @@ class Xml implements RendererInterface
         'attributes' => [
             'class' => 'xml-viewer',
             'allow' => 'fullscreen',
-            'style' => 'height: 70vh; width: 100%; border: none;',
+            'style' => 'height: 70vh; min-height: 600px; width: 100%; border: none;',
         ],
     ];
 
