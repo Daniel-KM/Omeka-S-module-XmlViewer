@@ -70,11 +70,16 @@ class IndexController extends AbstractActionController
         $rendering = $renderings[$mediaType] ?? '';
         $filesize = (int) $resource->size();
 
+        $render = $this->params()->fromQuery('render');
+
         if (empty($filesize)
             || !$mediaType
+            // For security, there should be a default rendering even when a
+            // render is set in the query.
             || empty($rendering)
             || $rendering === 'false'
             || $rendering === 'no'
+            || (!empty($render) && in_array($render, ['false', 'no']))
         ) {
             $view = new ViewModel([
                 'resource' => $resource,
@@ -84,6 +89,14 @@ class IndexController extends AbstractActionController
             return $view
                 ->setTemplate('common/xml-fallback')
                 ->setTerminal(true);
+        }
+
+        // Check render.
+        if ($render) {
+            if (is_array($render)) {
+                $render = implode('|', $render);
+            }
+            $rendering = $render;
         }
 
         // In order to be displayed as xml in an iframe, the content-type should

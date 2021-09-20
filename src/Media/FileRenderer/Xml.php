@@ -23,6 +23,13 @@ class Xml implements RendererInterface
             'allow' => 'fullscreen',
             'style' => 'height: 70vh; min-height: 600px; width: 100%; border: none;',
         ],
+        'url' => [
+            'original' => false,
+            'generic' => false,
+            'render' => null,
+            'query' => [],
+            'force_canonical' => false,
+        ],
     ];
 
     /**
@@ -34,7 +41,12 @@ class Xml implements RendererInterface
      *   - template: the partial to use.
      *   - attributes: set the attributes of the iframe as a array; the default
      *     class "xml-viewer" is added and default height and width too (style).
-     *   - original: use original file.
+     *   - url: Options to customize the source url:
+     *     - original (bool): use the full url of the unmodified original file;
+     *     - generic (bool): allows to use the generic url instead of site one;
+     *     - render (string|array): a specific stylesheet to use for rendering;
+     *     - query (array): a query to append to the url;
+     *     - force_canonical (bool): return an absolute url.
      * @return string The output is the media link when the xml is not managed.
      * @see \Omeka\Media\FileRenderer\FallbackRenderer::render()
      */
@@ -69,9 +81,10 @@ class Xml implements RendererInterface
 
         $options['attributes']['id'] = 'xml-viewer-' . $media->id();
 
-        $options['attributes']['src'] = empty($options['original'])
-            ? $plugins->get('urlPlainTextFile')->__invoke($media)
+        $options['attributes']['src'] = empty($options['url']['original'])
+            ? $plugins->get('urlPlainTextFile')->__invoke($media, $options['url'] ?? [])
             : $media->originalUrl();
+        unset($options['url']);
 
         $mediaType = (string) $media->mediaType();
         if (strpos($options['attributes']['class'], 'xml-viewer') === false) {
