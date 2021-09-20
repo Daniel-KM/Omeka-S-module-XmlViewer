@@ -48,7 +48,7 @@ Usage
 -----
 
 It is useless to display many xml contents, so by default, no xml content is
-displayed.
+displayed, only the link.
 
 ### Set the rendering for each media-type
 
@@ -67,7 +67,7 @@ be:
   the xsl stylesheet itself, or via the xsl output.
 - a string among:
   - `text`: render the xml as pure text;
-  - `no`: skip the xml;
+  - `no` or `false`: skip the xml;
   - `original`: render original files, so they should contain a link to a xsl
   that converts the xml into an html or xhtml or something renderable in an
   iframe.
@@ -83,8 +83,39 @@ The most common browsers manage only xslt v1.0.
 
 In all cases, the media-type should be allowed.
 
-***Warning***: CORS issues may occur when the domains are different between the
-iframe and the Omeka page.
+### Override the config
+
+The css/xsl stylesheets are stored in the asset directory, so they can be
+overridden by any file with the same path in the theme.
+
+Furthermore, they may be overridden directly with an argument `render` in the url:
+https://example.org/s/my-site/xml/1?render=xsl/specific-xsl.xsl.
+
+In the theme, the rendering can be done like that:
+
+```php
+echo $xmlMedia->render(['url' => ['render' => 'xsl/my-specific.xsl']]);
+```
+
+### Security
+
+When external urls are used instead of assets, some security points should be
+checked.
+
+#### https/https
+
+Browsers forbid usage of unsecure iframe (`http`) on a secure page (`https`). If
+you really need to use a `http` stylesheet, turn your server on `http`.
+
+A future development will allow a server rendering to fix this issue. Anyway,
+every site should be https nowadays.
+
+#### Cors
+
+***Warning***: Cross-origin resource sharing (CORS) issues may occur when the
+domains are different between the iframe and the Omeka page, even when they are
+all `https`. Check if the urls of the remote domains are allowed on the local
+site.
 
 ### XML media-type
 
@@ -199,8 +230,8 @@ Module [Xml Viewer] for Omeka S:
 * Copyright Daniel Berthereau, 2019-2021
 
 First version of this module was built for the future digital library of [Association Valentin Haüy],
-with the help of the Observatoire de la vie littéraire [OBVIL] of [Sorbonne Université].
-Some code was integrated from the module [Next].
+with the help of the Observatoire des textes, des idées et des corpus [OBTIC] of
+[Sorbonne Université]. Some code was integrated from the module [Next].
 
 
 [XML Viewer]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer
@@ -225,6 +256,6 @@ Some code was integrated from the module [Next].
 [LGPL]: http://www.gnu.org/licenses/lgpl.html
 [GitLab]: https://gitlab.com/Daniel-KM
 [Association Valentin Haüy]: https://avh.asso.fr
-[OBVIL]: https://obvil.sorbonne-universite.fr
+[OBTIC]: https://obtic.sorbonne-universite.fr
 [Sorbonne Université]: https://www.sorbonne-universite.fr
 [Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
