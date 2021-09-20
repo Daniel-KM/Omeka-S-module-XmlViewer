@@ -112,14 +112,16 @@ class IndexController extends AbstractActionController
             $assetUrl = $this->viewHelpers()->get('assetUrl');
             foreach (array_filter(array_map('trim', explode('|', $rendering))) as $stylesheet) {
                 $extension = strtolower(pathinfo($rendering, PATHINFO_EXTENSION));
-                if (in_array($extension, ['css', 'xsl', 'xslt'])
-                    && substr($stylesheet, 0, 1) !== '/'
+                if (!in_array($extension, ['css', 'xsl', 'xslt'])) {
+                    continue;
+                }
+                if (substr($stylesheet, 0, 1) !== '/'
                     && substr($stylesheet, 0, 8) !== 'https://'
                     && substr($stylesheet, 0, 7) !== 'http://'
                 ) {
                     $stylesheet = $assetUrl($stylesheet, 'XmlViewer', true);
-                    $piStylesheet .= sprintf("\n" . '<?xml-stylesheet type="text/%s" href="%s" ?>', $extension === 'xslt' ? 'xsl' : $extension, $stylesheet);
                 }
+                $piStylesheet .= sprintf("\n" . '<?xml-stylesheet type="text/%s" href="%s" ?>', $extension === 'xslt' ? 'xsl' : $extension, $stylesheet);
             }
             if ($piStylesheet) {
                 $contentMediaType = 'application/xml';
