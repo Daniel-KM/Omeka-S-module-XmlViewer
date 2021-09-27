@@ -171,11 +171,24 @@ The module [ViewerJS] can display them.
 
 The module [Model Viewer] can display them.
 
+### Issue with XML parsing and display error
+
+In some cases, the server or the browser are too quick or too slow to answer and
+the server may append a message like "session_write_close(): Failed to write session data using user defined save handler."
+to the xml output, so xsl won't be able to convert it, and the browser display
+an error like "XML Parsing Error: junk after document element".
+
+In that case, put your Omeka server in production mode (`SetEnv APPLICATION_ENV "production"`
+in file `.htaccess`). Else disable `display_error` in your php config (file
+`php.ini` on your server, or with `php_flag display_startup_errors off` in `.htaccess`.
+Else (not recommended) add a `@` before `session_write_close();` line 235 of [`vendor/laminas/laminas-session/src/SessionManager.php`].
+
 
 TODO
 ----
 
 - [ ] Server rendering (convert the xml to xhtml through the xsl).
+- [ ] Better fix for session_write_close().
 
 
 Warning
@@ -249,6 +262,7 @@ with the help of the Observatoire des textes, des idées et des corpus [OBTIC] o
 [Verovio]: https://gitlab.com/Daniel-KM/Omeka-S-module-Verovio
 [ViewerJs]: https://gitlab.com/Daniel-KM/Omeka-S-module-ViewerJs
 [Model Viewer]: https://gitlab.com/Daniel-KM/Omeka-S-module-ModelViewer
+[vendor/laminas/laminas-session/src/SessionManager.php]: https://github.com/laminas/laminas-session/blob/2.13.x/src/SessionManager.php#L240
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
