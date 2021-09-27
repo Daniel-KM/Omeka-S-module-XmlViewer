@@ -187,6 +187,9 @@ class IndexController extends AbstractActionController
             readfile($filepath);
         }
 
+        // TODO Fix issue with session. See readme.
+        ini_set('display_errors', '0');
+
         // Return response to avoid default view rendering and to manage events.
         return $response;
     }
