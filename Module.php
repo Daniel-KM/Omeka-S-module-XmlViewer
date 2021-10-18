@@ -80,7 +80,7 @@ class Module extends AbstractModule
 
         if ($this->isModuleActive('BulkEdit')) {
             $message = new Message(
-                'To specify a precise xml media-type, for example "application/tei+xml" instead of "application/xml", batch edit them.', // @translate
+                'To specify a precise xml media-type, for example "application/tei+xml" instead of "application/xml", batch edit them.' // @translate
             );
         } else {
             $message = new Message(
