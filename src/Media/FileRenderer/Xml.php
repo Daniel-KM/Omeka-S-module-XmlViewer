@@ -72,6 +72,8 @@ class Xml implements RendererInterface
                 }
                 if (empty($options['attributes']['class'])) {
                     $options['attributes']['class'] = 'xml-viewer';
+                } elseif (strpos($options['attributes']['class'], 'xml-viewer') === false) {
+                    $options['attributes']['class'] = 'xml-viewer ' . $options['attributes']['class'];
                 }
             }
         } else {
@@ -87,9 +89,6 @@ class Xml implements RendererInterface
         unset($options['url']);
 
         $mediaType = (string) $media->mediaType();
-        if (strpos($options['attributes']['class'], 'xml-viewer') === false) {
-            $options['attributes']['class'] = 'xml-viewer ' . $options['attributes']['class'];
-        }
         if (!in_array($mediaType, ['', 'text/xml', 'application/xml'])) {
             $options['attributes']['class'] .= ' '
                 . str_replace(['vnd.', '+', '.', ';'], ['', '-', '-', '-'], substr($mediaType, strpos($mediaType, '/') + 1));
