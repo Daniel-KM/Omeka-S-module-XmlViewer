@@ -6,10 +6,12 @@ XML Viewer (module for Omeka S)
 > than the previous repository.__
 
 [XML Viewer] is a module for [Omeka S] that integrates a simple viewer for XML.
-Currently, only a generic format and the TEI are available by default.
+Currently, only a generic format, [Alto] and the TEI are available by default.
 
 In practice, the xml is converted into html via a xslt stylesheet and displayed
 through an iframe. The rendering can use a css stylesheet too.
+
+Alto is a standard format used to store text from scanned objects.
 
 TEI is the Text Encoding Initiative, a standard used for the representation of
 the manuscripts and any other texts in a digital format. It uses the html/css/js/xsl
@@ -158,6 +160,11 @@ You can update the list of the xml media-types too in the file `data/media-types
 
 Some modules provide a specific viewer for some xml files.
 
+### Alto
+
+The module [Extract Text] can extract the raw text and store it in a property of
+the item and the media. The content is displayed as a simple text currently.
+
 #### MusicXML and XML-MEI
 
 There is a special module for MusicXml and XML-MEI, [Verovio], that render the
@@ -254,6 +261,8 @@ with the help of the Observatoire des textes, des idées et des corpus [OBTIC] o
 [Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
 [Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/issues
+[Alto]: https://www.loc.gov/standards/alto
+[Extract Text]: https://github.com/omeka-s-modules/ExtractText
 [Verovio Viewer]: https://gitlab.com/Daniel-KM/Omeka-S-module-Verovio
 [Bulk Edit]: https://gitlab.com/Daniel-KM/Omeka-S-module-BulkEdit
 [Next]: https://gitlab.com/Daniel-KM/Omeka-S-module-Next
