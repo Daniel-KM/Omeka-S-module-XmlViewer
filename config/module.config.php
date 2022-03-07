@@ -113,12 +113,14 @@ return [
             'xmlviewer_renderings' => [
                 'text/xml' => 'xsl/xml-html.xslt',
                 'application/xml' => 'xsl/xml-html.xslt',
+                'application/alto+xml' => 'xsl/xml-alto-html.xslt',
             ],
         ],
         'site_settings' => [
             'xmlviewer_renderings' => [
                 'text/xml' => 'xsl/xml-html.xslt',
                 'application/xml' => 'xsl/xml-html.xslt',
+                'application/alto+xml' => 'xsl/xml-alto-html.xslt',
             ],
         ],
     ],
