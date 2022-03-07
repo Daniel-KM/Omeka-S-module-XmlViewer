@@ -33,9 +33,12 @@ return [
     'http://www.loc.gov/MARC21/slim'                    => 'application/marcxml+xml',
     // 'http://www.loc.gov/METS/'                       => 'application/vnd.mets+xml', // Deprecated in 2011.
     'http://www.loc.gov/METS/'                          => 'application/mets+xml',
-    'http://www.loc.gov/mods/'                          => 'application/vnd.mods+xml',
+    // 'http://www.loc.gov/mods/'                       => 'application/vnd.mods+xml', // Deprecated in 2011.
+    'http://www.loc.gov/mods/'                          => 'application/mods+xml',
     // 'http://www.loc.gov/standards/alto/ns-v3#'       => 'application/vnd.alto+xml', // Deprecated in 2017.
+    'http://www.loc.gov/standards/alto/ns-v2#'          => 'application/alto+xml',
     'http://www.loc.gov/standards/alto/ns-v3#'          => 'application/alto+xml',
+    'http://www.loc.gov/standards/alto/ns-v4#'          => 'application/alto+xml',
     'http://www.music-encoding.org/ns/mei'              => 'application/vnd.mei+xml',
     'http://www.music-encoding.org/schema/3.0.0/mei-all.rng' => 'application/vnd.mei+xml',
     // See https://github.com/w3c/musicxml/blob/gh-pages/schema/musicxml.xsd
