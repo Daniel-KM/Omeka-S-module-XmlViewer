@@ -17,6 +17,7 @@ return [
     // ModelViewer for models, etc.
     'application/alto+xml',
     'application/atom+xml',
+    'application/ead+xml', // Unofficial.
     'application/marcxml+xml',
     'application/mets+xml',
     'application/mods+xml',

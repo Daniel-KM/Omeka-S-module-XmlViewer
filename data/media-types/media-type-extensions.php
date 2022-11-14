@@ -6,14 +6,25 @@
  * @var array
  */
 return [
+    'alto',
+    'atom',
+    'ead',
+    'feed',
     'fodp',
     'fods',
     'fodt',
     'html',
+    'mag',
     'mei',
+    'mets',
+    'mods',
     'musicxml',
     'mxl',
+    'pdf2xml',
+    'refnum',
+    'rss',
     'svg',
+    'tei',
     'xhtml',
     'xml',
 ];

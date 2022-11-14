@@ -10,6 +10,12 @@
  * Some formats may need more check in code source.
  *
  * @var array
+ *
+ * @see \Omeka\File\TempFile
+ * @see \ExtractText /data/media-types/media-type-identifiers
+ * @see \IiifSearch\View\Helper\XmlMediaType
+ * @see \XmlViewer /data/media-types/media-type-identifiers
+ * @see \BulkImport\Form\Reader\XmlReaderParamsForm
  */
 return [
     'application/xml'                                   => 'application/xml',
@@ -61,6 +67,7 @@ return [
 
     // 'alto'                                           => 'application/vnd.alto+xml', // Deprecated in 2017.
     'alto'                                              => 'application/alto+xml',
+    'atom'                                              => 'application/atom+xml',
     'ead'                                               => 'application/vnd.ead+xml',
     'feed'                                              => 'application/atom+xml',
     'html'                                              => 'text/html',
@@ -70,7 +77,7 @@ return [
     'mets'                                              => 'application/mets+xml',
     // 'mods'                                           => 'application/vnd.mods+xml', // Deprecated in 2011.
     'mods'                                              => 'application/mods+xml',
-    'pdf2xml'                                           => 'application/vnd.pdf2xml+xml',
+    'pdf2xml'                                           => 'application/vnd.pdf2xml+xml', // Used in module IIIF Search.
     'refNum'                                            => 'application/vnd.bnf.refnum+xml',
     'rss'                                               => 'application/rss+xml',
     'score-partwise'                                    => 'application/vnd.recordare.musicxml+xml',
