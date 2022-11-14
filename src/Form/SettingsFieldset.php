@@ -12,6 +12,7 @@ class SettingsFieldset extends Fieldset
     public function init(): void
     {
         $this
+            ->setAttribute('id', 'xml-viewer')
             ->add([
                 'name' => 'xmlviewer_renderings',
                 'type' => ArrayTextarea::class,
