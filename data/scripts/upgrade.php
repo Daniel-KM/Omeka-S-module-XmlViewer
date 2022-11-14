@@ -2,9 +2,6 @@
 
 namespace XmlViewer;
 
-use Omeka\Mvc\Controller\Plugin\Messenger;
-use Omeka\Stdlib\Message;
-
 /**
  * @var Module $this
  * @var \Laminas\ServiceManager\ServiceLocatorInterface $serviceLocator

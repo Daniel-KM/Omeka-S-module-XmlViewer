@@ -33,7 +33,7 @@ return [
         // Aliases are not used to speed loading and to decrease memory use.
         'invokables' => [
             'xml' => Media\FileRenderer\Xml::class,
-        ]
+        ],
     ],
     'router' => [
         'routes' => [

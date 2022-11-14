@@ -41,7 +41,6 @@ use Generic\AbstractModule;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
 use Omeka\Module\Exception\ModuleCannotInstallException;
-use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
 
 class Module extends AbstractModule
@@ -72,7 +71,7 @@ class Module extends AbstractModule
     {
         $this->updateWhitelist();
 
-        $messenger = new Messenger();
+        $messenger = $this->getServiceLocator()->get('ControllerPluginManager')->get('messenger');
         $message = new Message(
             'To render xml, map each specific xml media-type with a css or xsl in settings and site settings.' // @translate
         );
@@ -95,7 +94,7 @@ class Module extends AbstractModule
 
     protected function addAclRules(): void
     {
-        /**
+        /*
          * @var \Omeka\Permissions\Acl $acl
          * @see \Omeka\Service\AclFactory
          */
