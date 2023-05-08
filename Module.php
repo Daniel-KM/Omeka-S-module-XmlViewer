@@ -2,9 +2,9 @@
 /**
  * @author Daniel Berthereau
  * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
- * @copyright Daniel Berthereau, 2018-2021
+ * @copyright Daniel Berthereau, 2018-2023
  *
- * Copyright 2018-2021 Daniel Berthereau
+ * Copyright 2018-2023 Daniel Berthereau
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software. You can use, modify and/or

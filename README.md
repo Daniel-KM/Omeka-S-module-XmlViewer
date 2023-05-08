@@ -247,7 +247,7 @@ Copyright
 
 Module [Xml Viewer] for Omeka S:
 
-* Copyright Daniel Berthereau, 2019-2021
+* Copyright Daniel Berthereau, 2019-2023
 
 First version of this module was built for the future digital library of [Association Valentin Haüy],
 with the help of the Observatoire des textes, des idées et des corpus [OBTIC] of
@@ -258,7 +258,7 @@ with the help of the Observatoire des textes, des idées et des corpus [OBTIC] o
 [Œuvre/Teinte]: https://github.com/oeuvres/teinte
 [Omeka S]: https://omeka.org/s
 [XmlViewer.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/releases
-[Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
+[Installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/issues
 [Alto]: https://www.loc.gov/standards/alto
