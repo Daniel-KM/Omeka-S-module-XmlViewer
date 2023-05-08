@@ -6,6 +6,7 @@ return [
     'service_manager' => [
         'factories' => [
             'Omeka\File\TempFileFactory' => Service\File\TempFileFactoryFactory::class,
+            'Omeka\File\Validator' => Service\File\ValidatorFactory::class,
         ],
     ],
     'view_manager' => [
@@ -27,6 +28,11 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => Service\Controller\IndexControllerFactory::class,
+        ],
+    ],
+    'controller_plugins' => [
+        'factories' => [
+            'specifyMediaType' => Service\ControllerPlugin\SpecifyMediaTypeFactory::class,
         ],
     ],
     'file_renderers' => [

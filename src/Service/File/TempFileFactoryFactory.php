@@ -10,6 +10,8 @@ class TempFileFactoryFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        return new TempFileFactory($services);
+        $tempFileFactory = new TempFileFactory($services);
+        return $tempFileFactory
+            ->setSpecifyMediaType($services->get('ControllerPluginManager')->get('specifyMediaType'));
     }
 }

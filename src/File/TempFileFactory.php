@@ -3,10 +3,16 @@
 namespace XmlViewer\File;
 
 use Laminas\EventManager\EventManagerAwareTrait;
+use XmlViewer\Mvc\Controller\Plugin\SpecifyMediaType;
 
 class TempFileFactory extends \Omeka\File\TempFileFactory
 {
     use EventManagerAwareTrait;
+
+    /**
+     * @var \XmlViewer\Mvc\Controller\Plugin\SpecifyMediaType
+     */
+    protected $specifyMediaType;
 
     public function build()
     {
@@ -14,9 +20,13 @@ class TempFileFactory extends \Omeka\File\TempFileFactory
             $this->store, $this->thumbnailManager, $this->validator
         );
         $tempFile->setEventManager($this->getEventManager());
-
-        $mediaTypeIdentifiers = require dirname(__DIR__, 2) . '/data/media-types/media-type-identifiers.php';
         return $tempFile
-            ->setMediaTypeIdentifiers($mediaTypeIdentifiers);
+            ->setSpecifyMediaType($this->specifyMediaType);
+    }
+
+    public function setSpecifyMediaType(SpecifyMediaType $specifyMediaType): self
+    {
+        $this->specifyMediaType = $specifyMediaType;
+        return $this;
     }
 }
