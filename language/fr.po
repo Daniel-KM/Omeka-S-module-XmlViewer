@@ -7,48 +7,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 00:00+0000\n"
-"PO-Revision-Date: 2021-09-13 00:00+0000\n"
+"POT-Creation-Date: 2024-02-26 00:00+0000"
+"MI+ZONE\n"
+"PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.2.2\n"
 
-#: Module.php:65
+#: Module.php:71
 msgid "The module requires the php extension \"xsl\"."
 msgstr "Ce module nécessite l'extension php \"xsl\"."
 
-#: Module.php:66
+#: Module.php:72
 msgid "See module’s installation documentation."
 msgstr "Voir la documentation d’installation du module."
 
-#: src/Generic/AbstractModule.php:66
-#, php-format
-msgid "This module requires the module \"%s\"."
-msgstr "Ce module requiert le module « %s »."
-
-#: src/Generic/AbstractModule.php:73
-#, php-format
-msgid "This module requires modules \"%s\"."
-msgstr "Ce module requiert les modules « %s »."
-
-#: src/Generic/AbstractModule.php:80
-msgid "This module has resources that cannot be installed."
-msgstr "Ce module a des ressources qui ne peuvent pas être installées."
-
-#: src/Generic/AbstractModule.php:725
-#, php-format
-msgid ""
-"The module \"%s\" was automatically deactivated because the dependencies are "
-"unavailable."
-msgstr ""
-"Le module « %s » a été automatiquement désactivé car ses dépendances ne sont "
-"plus disponibles."
-
-#: Module.php:77
+#: Module.php:83
 msgid ""
 "To render xml, map each specific xml media-type with a css or xsl in "
 "settings and site settings."
@@ -57,7 +35,7 @@ msgstr ""
 "avec un css ou une xsl dans les paramètres globaux et dans les paramètres de "
 "site."
 
-#: Module.php:83
+#: Module.php:89
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
 "instead of \"application/xml\", batch edit them."
@@ -65,25 +43,29 @@ msgstr ""
 "Pour indiquer un média-type xml précis, par exemple « application/tei+xml » "
 "au lieu de « application/xml », lancer un traitement en lot."
 
-#: Module.php:87
-#, php-format
+#: Module.php:93
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
-"instead of \"application/xml\", batch edit them with module %sBulk Edit%s."
+"instead of \"application/xml\", batch edit them with module {link}Bulk "
+"Edit{link_end}."
 msgstr ""
 "Pour indiquer un média-type xml précis, par exemple « application/tei+xml » "
 "au lieu de « application/xml », lancer un traitement en lot avec le module "
-"%sBulk Edit%s."
+"{link}Bulk Edit{link_end}."
 
 #: src/Form/SettingsFieldset.php:10
 msgid "XML Viewer"
 msgstr "Visionneuse XML"
 
-#: src/Form/SettingsFieldset.php:19
+#: src/Form/SettingsFieldset.php:17
+msgid "Players"
+msgstr "Lecteurs"
+
+#: src/Form/SettingsFieldset.php:30
 msgid "Render by xml media-type"
 msgstr "Rendu par média-type xml"
 
-#: src/Form/SettingsFieldset.php:20
+#: src/Form/SettingsFieldset.php:31
 msgid ""
 "Set the rendering as a stylesheet (xsl or css, full url or asset file) or a "
 "specific format (\"text\", \"original\", \"no\") to use by media-type, one "
@@ -115,6 +97,25 @@ msgstr "Le média #%s n’a pas d’url pour le fichier original."
 #, php-format
 msgid "Media #%s has no readable file."
 msgstr "Le média #%s n’a pas fichier lisible."
+
+#, php-format
+#~ msgid "This module requires the module \"%s\"."
+#~ msgstr "Ce module requiert le module « %s »."
+
+#, php-format
+#~ msgid "This module requires modules \"%s\"."
+#~ msgstr "Ce module requiert les modules « %s »."
+
+#~ msgid "This module has resources that cannot be installed."
+#~ msgstr "Ce module a des ressources qui ne peuvent pas être installées."
+
+#, php-format
+#~ msgid ""
+#~ "The module \"%s\" was automatically deactivated because the dependencies "
+#~ "are unavailable."
+#~ msgstr ""
+#~ "Le module « %s » a été automatiquement désactivé car ses dépendances ne "
+#~ "sont plus disponibles."
 
 #, php-format
 #~ msgid "Media #%s has a no original file."

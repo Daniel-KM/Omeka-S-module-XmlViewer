@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 00:00+0000\n"
+"POT-Creation-Date: 2024-02-26 00:00+0000"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,63 +17,46 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:65
+#: Module.php:71
 msgid "The module requires the php extension \"xsl\"."
 msgstr ""
 
-#: Module.php:66
+#: Module.php:72
 msgid "See module’s installation documentation."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:66
-#, php-format
-msgid "This module requires the module \"%s\"."
-msgstr ""
-
-#: src/Generic/AbstractModule.php:73
-#, php-format
-msgid "This module requires modules \"%s\"."
-msgstr ""
-
-#: src/Generic/AbstractModule.php:80
-msgid "This module has resources that cannot be installed."
-msgstr ""
-
-#: src/Generic/AbstractModule.php:725
-#, php-format
-msgid ""
-"The module \"%s\" was automatically deactivated because the dependencies are "
-"unavailable."
-msgstr ""
-
-#: Module.php:77
+#: Module.php:83
 msgid ""
 "To render xml, map each specific xml media-type with a css or xsl in "
 "settings and site settings."
 msgstr ""
 
-#: Module.php:83
+#: Module.php:89
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
 "instead of \"application/xml\", batch edit them."
 msgstr ""
 
-#: Module.php:87
-#, php-format
+#: Module.php:93
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
-"instead of \"application/xml\", batch edit them with module %sBulk Edit%s."
+"instead of \"application/xml\", batch edit them with module {link}Bulk "
+"Edit{link_end}."
 msgstr ""
 
 #: src/Form/SettingsFieldset.php:10
 msgid "XML Viewer"
 msgstr ""
 
-#: src/Form/SettingsFieldset.php:19
+#: src/Form/SettingsFieldset.php:17
+msgid "Players"
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:30
 msgid "Render by xml media-type"
 msgstr ""
 
-#: src/Form/SettingsFieldset.php:20
+#: src/Form/SettingsFieldset.php:31
 msgid ""
 "Set the rendering as a stylesheet (xsl or css, full url or asset file) or a "
 "specific format (\"text\", \"original\", \"no\") to use by media-type, one "
