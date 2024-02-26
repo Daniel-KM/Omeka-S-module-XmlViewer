@@ -23,7 +23,7 @@ Installation
 
 See general end user documentation for [installing a module].
 
-First, if wanted, install the optional modules [Generic].
+The module [Common] must be installed first.
 
 The module uses an external library, [Œuvre/Teinte], so use the release zip to
 install it, or use and init the source.
@@ -44,6 +44,8 @@ the module to `XmlViewer`, and go to the root module, and run:
 ```sh
 composer install --no-dev
 ```
+
+Then install it like any other Omeka module and follow the config instructions.
 
 
 Usage
@@ -258,7 +260,7 @@ with the help of the Observatoire des textes, des idées et des corpus [OBTIC] o
 [Œuvre/Teinte]: https://github.com/oeuvres/teinte
 [Omeka S]: https://omeka.org/s
 [XmlViewer.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/releases
-[Installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
+[installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/issues
 [Alto]: https://www.loc.gov/standards/alto
