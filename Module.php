@@ -2,9 +2,9 @@
 /**
  * @author Daniel Berthereau
  * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
- * @copyright Daniel Berthereau, 2018-2023
+ * @copyright Daniel Berthereau, 2018-2024
  *
- * Copyright 2018-2023 Daniel Berthereau
+ * Copyright 2018-2024 Daniel Berthereau
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software. You can use, modify and/or
@@ -31,20 +31,27 @@
  */
 namespace XmlViewer;
 
-if (!class_exists(\Generic\AbstractModule::class)) {
-    require file_exists(dirname(__DIR__) . '/Generic/AbstractModule.php')
-        ? dirname(__DIR__) . '/Generic/AbstractModule.php'
-        : __DIR__ . '/src/Generic/AbstractModule.php';
+if (!class_exists(\Common\TraitModule::class)) {
+    require_once dirname(__DIR__) . '/Common/TraitModule.php';
 }
 
-use Generic\AbstractModule;
+use Common\Stdlib\PsrMessage;
+use Common\TraitModule;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
+use Omeka\Module\AbstractModule;
 use Omeka\Module\Exception\ModuleCannotInstallException;
-use Omeka\Stdlib\Message;
 
+/**
+ * Xml Viewer
+ *
+ * @copyright Daniel Berthereau, 2018-2024
+ * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
+ */
 class Module extends AbstractModule
 {
+    use TraitModule;
+
     const NAMESPACE = __NAMESPACE__;
 
     public function onBootstrap(MvcEvent $event): void
@@ -72,20 +79,22 @@ class Module extends AbstractModule
         $this->updateWhitelist();
 
         $messenger = $this->getServiceLocator()->get('ControllerPluginManager')->get('messenger');
-        $message = new Message(
+        $message = new PsrMessage(
             'To render xml, map each specific xml media-type with a css or xsl in settings and site settings.' // @translate
         );
         $messenger->addSuccess($message);
 
         if ($this->isModuleActive('BulkEdit')) {
-            $message = new Message(
+            $message = new PsrMessage(
                 'To specify a precise xml media-type, for example "application/tei+xml" instead of "application/xml", batch edit them.' // @translate
             );
         } else {
-            $message = new Message(
-                'To specify a precise xml media-type, for example "application/tei+xml" instead of "application/xml", batch edit them with module %sBulk Edit%s.', // @translate
-                '<a href="https://gitlab.com/Daniel-KM/Omeka-S-module-BulkEdit">',
-                '</a>'
+            $message = new PsrMessage(
+                'To specify a precise xml media-type, for example "application/tei+xml" instead of "application/xml", batch edit them with module {link}Bulk Edit{link_end}.', // @translate
+                [
+                    'link' => '<a href="https://gitlab.com/Daniel-KM/Omeka-S-module-BulkEdit">',
+                    'link_end' => '</a>',
+                ]
             );
             $message->setEscapeHtml(false);
         }
