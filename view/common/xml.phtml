@@ -8,6 +8,7 @@
 
 // User attribute names and values are already escaped.
 $attrs = '';
+if (!isset($options['attributes']['loading'])) $options['attributes']['loading'] = 'lazy';
 foreach ($options['attributes'] as $name => $value) $attrs .= ' ' . $name . '="' . $value . '"';
 ?>
 
