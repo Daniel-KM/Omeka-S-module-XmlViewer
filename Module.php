@@ -147,14 +147,14 @@ class Module extends AbstractModule
         $mediaTypes = require __DIR__ . '/data/media-types/media-type-identifiers.php';
         // Manage an exception.
         $mediaTypes[] = 'application/vnd.recordare.musicxml';
-        sort($mediaTypes);
-        $whitelist = array_values(array_unique(array_merge(array_values($whitelist), $mediaTypes)));
+        $whitelist = array_unique(array_merge(array_values($whitelist), array_values($mediaTypes)));
+        sort($whitelist);
         $settings->set('media_type_whitelist', $whitelist);
 
         $whitelist = $settings->get('extension_whitelist', []);
         $extensions = require __DIR__ . '/data/media-types/media-type-extensions.php';
-        sort($extensions);
-        $whitelist = array_values(array_unique(array_merge(array_values($whitelist), $extensions)));
+        $whitelist = array_unique(array_merge(array_values($whitelist), array_values($extensions)));
+        sort($whitelist);
         $settings->set('extension_whitelist', $whitelist);
     }
 }
