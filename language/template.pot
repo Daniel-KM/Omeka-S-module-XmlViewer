@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-26 00:00+0000"
+"POT-Creation-Date: 2025-03-17 08:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:71
+#: data/scripts/upgrade.php:29 Module.php:70
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr ""
+
+#: Module.php:79
 msgid "The module requires the php extension \"xsl\"."
 msgstr ""
 
-#: Module.php:72
+#: Module.php:80
 msgid "See module’s installation documentation."
 msgstr ""
 
-#: Module.php:83
+#: Module.php:91
 msgid ""
 "To render xml, map each specific xml media-type with a css or xsl in "
 "settings and site settings."
 msgstr ""
 
-#: Module.php:89
+#: Module.php:97
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
 "instead of \"application/xml\", batch edit them."
 msgstr ""
 
-#: Module.php:93
+#: Module.php:101
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
 "instead of \"application/xml\", batch edit them with module {link}Bulk "
@@ -53,7 +58,7 @@ msgid "Players"
 msgstr ""
 
 #: src/Form/SettingsFieldset.php:30
-msgid "Render by xml media-type"
+msgid "XML Viewer: Render by xml media-type"
 msgstr ""
 
 #: src/Form/SettingsFieldset.php:31
