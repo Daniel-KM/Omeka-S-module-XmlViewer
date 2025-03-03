@@ -170,7 +170,7 @@ main::after,
 }
 
 /** specific wide screen, not for print or phone */
-@media screen {
+@media all {
   body {
     background-color: #eee;
     color: #161616;

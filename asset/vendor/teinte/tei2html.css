@@ -43,7 +43,7 @@ body {font-size: 16px; font-family: Georgia, "Bitstream Vera Serif", Times, seri
 tt, pre {font-family: "Andale Mono", "Lucida Console", Courier, "MS Courier New", monospace;}
 .dingbat {font-family: "FreeSans", "DejaVu Sans", "Lucida Sans Unicode", "Arial Unicode MS", sans-serif}
 blockquote, dd , p.p, .argument, .availability, div.bibl, li.bibl, .dialogue li , .justify, .note, div.stage {text-align: justify;}
-@media screen {
+@media all {
   body {color: #161616;}
   h1, h2, h3, h4, h5, h6 {font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Geneva, sans-serif;}
 }
@@ -213,7 +213,7 @@ h1.collection {text-transform: uppercase;}
 .dateline {margin: 2em 0; text-indent: 4em;}
 section
  {padding-top: 3em;}
-@media screen {.body > .div {padding-bottom: 3em;}}
+@media all {.body > .div {padding-bottom: 3em;}}
 div.docAuthor {text-align: center; font-variant: small-caps; font-size: 150%;}
 div.docDate {text-align: center;}
 div.docImprint {text-align: center;}
@@ -296,7 +296,7 @@ p.note {text-indent: 0; margin-top: 1ex; margin-bottom: 1ex;}
 a.noteref, a.noteback {font-family: sans-serif; text-decoration: none; border-bottom: none; font-style: normal; font-variant: normal; padding-right: 0.2ex; /* note sep */}
 a.noteref:hover, a.noteback:hover {text-decoration: none; border-bottom: solid 1px;}
 a.noteback {font-size: 85%;}
-@media screen {
+@media all {
   div.note, aside.note {margin: 0 0 0 2.5em; border-left: 1px solid #CCCCCC; padding: 0.5ex 0 0.5ex 0.5em;}
   section > div.note {margin: 1em 0 1em 0; padding-left: 1.5em; padding-left: 1.5rem;}
   a.noteback {position: absolute; display: block; text-align: right; width: 5ex; margin: 0.3ex 0 0 -7ex;}
@@ -515,7 +515,7 @@ figcaption.less:before {float: left; margin-left: -2em; content: '◿';} /*  */
 #article { }
 
 /** specific wide screen, not for print or phone */
-@media screen {
+@media all {
   body {background-color: #E2DED0;}
   #center {}
   #contenu {}
