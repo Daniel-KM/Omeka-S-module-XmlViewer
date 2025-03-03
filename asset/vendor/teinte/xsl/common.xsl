@@ -3,37 +3,37 @@
 
 LGPL  http://www.gnu.org/licenses/lgpl.html
 © 2013 Frederic.Glorieux@fictif.org & LABEX OBVIL
-© 2012 Frederic.Glorieux@fictif.org 
+© 2012 Frederic.Glorieux@fictif.org
 © 2010 Frederic.Glorieux@fictif.org & École nationale des chartes
 © 2007 Frederic.Glorieux@fictif.org
 © 2005 ajlsm.com (Cybertheses)
 
 
 Different templates shared among the callers
- * metadata
- * internal identifiers (<template name="href">)
- * cross linkink in same file (<template name="id">)
- * mode for links
+* metadata
+* internal identifiers (<template name="href">)
+* cross linkink in same file (<template name="id">)
+* mode for links
 
 -->
 <xsl:transform  version="1.0"
-  xmlns="http://www.w3.org/1999/xhtml" 
+  xmlns="http://www.w3.org/1999/xhtml"
   xmlns:date="http://exslt.org/dates-and-times"
   xmlns:exslt="http://exslt.org/common"
-  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
-  xmlns:saxon="http://icl.com/saxon" 
-  xmlns:tei="http://www.tei-c.org/ns/1.0" 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:saxon="http://icl.com/saxon"
+  xmlns:tei="http://www.tei-c.org/ns/1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  
-  exclude-result-prefixes="rdf rdfs tei" 
-  extension-element-prefixes="exslt saxon date" 
+
+  exclude-result-prefixes="rdf rdfs tei"
+  extension-element-prefixes="exslt saxon date"
   >
-  <!-- 
+  <!--
 Gobal TEI parameters and variables are divided in different categories
- * parameters set exclusively by the caller, impossible to guess from TEI file
- * parameters with prefered values from TEI file but possible to override when calling
- * constant variables
+* parameters set exclusively by the caller, impossible to guess from TEI file
+* parameters with prefered values from TEI file but possible to override when calling
+* constant variables
     -->
   <!-- base href for generated links -->
   <xsl:param name="base"/>
@@ -129,9 +129,9 @@ Gobal TEI parameters and variables are divided in different categories
               translate(
                 normalize-space(
                   substring-before(
-                    concat(substring-after(., ' '),' '), 
+                    concat(substring-after(., ' '),' '),
                   ' ')
-                ), 
+                ),
               $idfrom, $idto)"/>
           </xsl:variable>
           <xsl:choose>
@@ -326,12 +326,12 @@ Gobal TEI parameters and variables are divided in different categories
   <xsl:variable name="tab">
     <xsl:text>&#9;</xsl:text>
   </xsl:variable>
-  <xsl:variable name="apos">"</xsl:variable> 
+  <xsl:variable name="apos">"</xsl:variable>
   <!-- Some constants -->
   <xsl:variable name="epub2">epub2</xsl:variable>
   <xsl:variable name="epub3">epub3</xsl:variable>
   <xsl:variable name="html5">html5</xsl:variable>
-  <xsl:variable name="notblock"> anchor cb index lb milestone pb </xsl:variable> 
+  <xsl:variable name="notblock"> anchor cb index lb milestone pb </xsl:variable>
   <!-- What kind of root element to output ? html, nav… -->
   <xsl:param name="root" select="$html"/>
   <xsl:variable name="html">html</xsl:variable>
@@ -372,7 +372,7 @@ Gobal TEI parameters and variables are divided in different categories
       </em>
     </xsl:if>
   </xsl:variable>
-  
+
   <!-- A key to handle identified elements -->
   <xsl:key match="*" name="id" use="@xml:id"/>
   <!-- A key to count elements by name -->
@@ -498,15 +498,15 @@ Gobal TEI parameters and variables are divided in different categories
     </xsl:variable>
     <xsl:value-of select="normalize-space($titlebranch)"/>
   </xsl:template>
-  
-  <!-- 
-    Is given an element and defines whether or not this element is to be rendered inline. 
+
+  <!--
+    Is given an element and defines whether or not this element is to be rendered inline.
     XSLT1 can only return string (no booleans)
-    
+
     $inline != '' => is inline
     $inline = '' => is block
-    
-    BAD tests 
+
+    BAD tests
     ($inline = true()) => always true
     not($inline) => always false
 
@@ -642,7 +642,7 @@ Gobal TEI parameters and variables are divided in different categories
             <xsl:when test="self::tei:val">true</xsl:when>
             <xsl:when test="self::tei:width">true</xsl:when>
             <xsl:when test="self::tei:dynamicContent">true</xsl:when>
-            <!-- 
+            <!--
           <xsl:when test="parent::tei:note[tei:isEndNote(.)]"/>
           -->
             <xsl:when test="not(self::tei:p)">
@@ -655,8 +655,8 @@ Gobal TEI parameters and variables are divided in different categories
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  
+
+
   <!-- A template to get a descent bibliographic to display -->
   <xsl:template name="bibl">
     <xsl:param name="book" select="$bibl"/>
@@ -682,7 +682,7 @@ Gobal TEI parameters and variables are divided in different categories
       <xsl:text> </xsl:text>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template name="analytic">
     <xsl:for-each select="ancestor-or-self::*[not(self::tei:TEI)][not(self::tei:text)][not(self::tei:body)]">
       <xsl:if test="position() != 1"> — </xsl:if>
@@ -712,7 +712,7 @@ Gobal TEI parameters and variables are divided in different categories
 
   <xsl:template match="tei:persName" mode="id">
     <xsl:variable name="id0"> '":,;. /\</xsl:variable>
-   <xsl:choose>
+  <xsl:choose>
       <xsl:when test="@xml:id">
         <xsl:value-of select="translate(@xml:id, $id0, '')"/>
       </xsl:when>
@@ -870,14 +870,14 @@ Gobal TEI parameters and variables are divided in different categories
     </xsl:choose>
     <xsl:value-of select="$suffix"/>
   </xsl:template>
-  
+
   <!--
 <h3>mode="n" (numéro)</h3>
 
 <p>
 Beaucoup de composants d'un texte peuvent être identifiés par un numéro notamment
 les différents types de notes (apparat critique, glose historique, philologique…), ou les sections hiérarchiques.
-Un tel numéro peut etre très utile pour 
+Un tel numéro peut etre très utile pour
 </p>
 
 -->
@@ -1166,7 +1166,8 @@ Could be correct for a text only version in <xsl:value-of select=""/>
     <xsl:text> </xsl:text>
   </xsl:template>
   <xsl:template match="text()" mode="title">
-    <xsl:variable name="text" select="translate(., ' ', '')"/>
+    <xsl:variable name="text" select="translate(., '
+', '')"/>
     <xsl:if test="translate(substring($text, 1,1), concat(' ', $lf, $cr, $tab), '') = ''">
       <xsl:text> </xsl:text>
     </xsl:if>
@@ -1181,15 +1182,15 @@ Could be correct for a text only version in <xsl:value-of select=""/>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
-  
+
   <xsl:template name="lspacer">
     <xsl:if test="@part = 'M' or @part = 'm' or @part = 'F' or @part = 'f'  or @part = 'y'  or @part = 'Y'">
       <!-- Rupted verse, get the exact spacer from previous verse -->
       <xsl:apply-templates select="preceding::tei:l[1]" mode="lspacer"/>
     </xsl:if>
-    
+
   </xsl:template>
-  
+
   <xsl:template match="tei:l" mode="lspacer">
     <xsl:variable name="txt">
       <xsl:apply-templates mode="title"/>
@@ -1224,8 +1225,8 @@ Could be correct for a text only version in <xsl:value-of select=""/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  
+
+
   <xsl:template match="tei:lb" mode="title">
     <xsl:variable name="prev" select="preceding-sibling::node()[1]"/>
     <xsl:variable name="next" select="following-sibling::node()[1]"/>
@@ -1359,7 +1360,7 @@ Could be correct for a text only version in <xsl:value-of select=""/>
   <xsl:template match="*" mode="label">
     <xsl:apply-templates mode="title" select="."/>
   </xsl:template>
-  <!-- 
+  <!--
     Centralisation of internal links rewriting, to call when current() node is the target.
     This template will choose if link should stay an anchor or will be rewritten according to the split
     policy.
@@ -1463,7 +1464,7 @@ Le mode label génère un intitulé court obtenu par une liste de valeurs locali
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
   <!-- Is <p> noindent ? -->
   <xsl:template name="noindent">
     <xsl:variable name="rend" select="concat(' ', normalize-space(@rend), ' ')"/>
@@ -1506,9 +1507,9 @@ Le mode label génère un intitulé court obtenu par une liste de valeurs locali
       <!-- bad
       -->
     </xsl:choose>
-    
+
   </xsl:template>
-  
+
   <!-- pour obtenir un chemin relatif à l'XSLT appliquée -->
   <xsl:template name="xslbase">
     <xsl:param name="path" select="/processing-instruction('xml-stylesheet')[contains(., 'xsl')]"/>
@@ -1689,5 +1690,5 @@ dégrossi le travail, mais du reste à faire  -->
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  
+
 </xsl:transform>
