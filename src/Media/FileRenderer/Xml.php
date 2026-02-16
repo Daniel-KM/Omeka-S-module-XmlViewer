@@ -91,7 +91,7 @@ class Xml implements RendererInterface
         $mediaType = (string) $media->mediaType();
         if (!in_array($mediaType, ['', 'text/xml', 'application/xml'])) {
             $options['attributes']['class'] .= ' '
-                . str_replace(['vnd.', '+', '.', ';'], ['', '-', '-', '-'], substr($mediaType, strpos($mediaType, '/') + 1));
+                . strtr(substr($mediaType, strpos($mediaType, '/') + 1), ['vnd.' => '', '+' => '-', '.' => '-', ';' => '-']);
         }
 
         $vars = [
