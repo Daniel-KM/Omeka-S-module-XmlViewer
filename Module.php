@@ -31,7 +31,7 @@
  */
 namespace XmlViewer;
 
-if (!class_exists(\Common\TraitModule::class)) {
+if (!class_exists('Common\TraitModule', false)) {
     require_once dirname(__DIR__) . '/Common/TraitModule.php';
 }
 
@@ -74,7 +74,7 @@ class Module extends AbstractModule
         }
 
         // Check if xml and xslt reader are available.
-        if (!class_exists('XSLTProcessor')) {
+        if (!class_exists('XSLTProcessor', false)) {
             throw new ModuleCannotInstallException(
                 $translate('The module requires the php extension "xsl".') // @translate
                     . ' ' . $translate('See module’s installation documentation.') // @translate
