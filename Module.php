@@ -2,7 +2,7 @@
 /**
  * @author Daniel Berthereau
  * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
- * @copyright Daniel Berthereau, 2018-2025
+ * @copyright Daniel Berthereau, 2018-2026
  *
  * Copyright 2018-2024 Daniel Berthereau
  *
@@ -45,7 +45,7 @@ use Omeka\Module\Exception\ModuleCannotInstallException;
 /**
  * Xml Viewer
  *
- * @copyright Daniel Berthereau, 2018-2025
+ * @copyright Daniel Berthereau, 2018-2026
  * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  */
 class Module extends AbstractModule
