@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v3#">
+    <Layout>
+        <Page ID="Page1" WIDTH="1000" HEIGHT="1500">
+            <PrintSpace>
+                <TextBlock ID="block1">
+                    <TextLine ID="line1">
+                        <String CONTENT="Hello" />
+                        <SP />
+                        <String CONTENT="World" />
+                    </TextLine>
+                </TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
