@@ -140,7 +140,7 @@ class ConfigTest extends AbstractHttpControllerTestCase
      */
     public function testMediaTypeIdentifiersDataFile(): void
     {
-        $path = dirname(__DIR__, 2) . '/data/media-types/media-type-identifiers.php';
+        $path = dirname(__DIR__, 3) . '/Common/data/media-types/media-type-identifiers.php';
         $this->assertFileExists($path);
 
         $identifiers = require $path;
@@ -229,7 +229,7 @@ class ConfigTest extends AbstractHttpControllerTestCase
      */
     public function testAltoNamespaceMappings(): void
     {
-        $identifiers = require dirname(__DIR__, 2) . '/data/media-types/media-type-identifiers.php';
+        $identifiers = require dirname(__DIR__, 3) . '/Common/data/media-types/media-type-identifiers.php';
 
         $altoNamespaces = [
             'http://bibnum.bnf.fr/ns/alto_prod',
