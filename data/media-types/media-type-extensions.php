@@ -13,6 +13,7 @@ return [
     'fodp',
     'fods',
     'fodt',
+    'hocr',
     'html',
     'mag',
     'mei',
