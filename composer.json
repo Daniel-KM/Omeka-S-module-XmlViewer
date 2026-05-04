@@ -1,5 +1,5 @@
 {
-    "name": "daniel-km/omeka-s-module-xmlviewer",
+    "name": "daniel-km/omeka-s-module-xml-viewer",
     "type": "omeka-s-module",
     "description": "Module for Omeka S: Allows to render xml files, like TEI.",
     "keywords": [
