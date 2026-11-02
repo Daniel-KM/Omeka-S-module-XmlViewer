@@ -53,3 +53,10 @@ if (version_compare($oldVersion, '3.3.0.5', '<')) {
         $siteSettings->set('xmlviewer_renderings', $renderings);
     }
 }
+
+if (version_compare($oldVersion, '3.4.13', '<')) {
+    $message = new Message(
+        $translate('Browsers are removing the support of xslt: Chrome stops it from version 155 (November 2026) and Firefox and Safari will follow. The xsl stylesheets are no longer rendered in these browsers, but the css stylesheets are still supported.') // @translate
+    );
+    $messenger->addWarning($message);
+}

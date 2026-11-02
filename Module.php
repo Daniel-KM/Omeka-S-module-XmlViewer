@@ -99,6 +99,11 @@ class Module extends AbstractModule
         );
         $messenger->addSuccess($message);
 
+        $message = new PsrMessage(
+            'Browsers are removing the support of xslt: Chrome stops it from version 155 (November 2026) and Firefox and Safari will follow. The xsl stylesheets are no longer rendered in these browsers, but the css stylesheets are still supported.' // @translate
+        );
+        $messenger->addWarning($message);
+
         if ($this->isModuleActive('BulkEdit')) {
             $message = new PsrMessage(
                 'To specify a precise xml media-type, for example "application/tei+xml" instead of "application/xml", batch edit them.' // @translate
