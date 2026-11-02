@@ -150,7 +150,9 @@ class Module extends AbstractModule
         $settings = $this->getServiceLocator()->get('Omeka\Settings');
 
         $whitelist = $settings->get('media_type_whitelist', []);
-        $mediaTypes = require dirname(__DIR__) . '/Common/data/media-types/media-type-identifiers.php';
+        // Common may be installed in modules/ or in composer-addons/modules/.
+        $commonPath = dirname((new \ReflectionClass(TraitModule::class))->getFileName(), 2);
+        $mediaTypes = require $commonPath . '/data/media-types/media-type-identifiers.php';
         // Manage an exception.
         $mediaTypes[] = 'application/vnd.recordare.musicxml';
         $whitelist = array_unique(array_merge(array_values($whitelist), array_values($mediaTypes)));
