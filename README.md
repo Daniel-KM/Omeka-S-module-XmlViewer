@@ -26,7 +26,12 @@ See general end user documentation for [installing a module].
 The module [Common] must be installed first.
 
 The module uses an external library, [Œuvre/Teinte], so use the release zip to
-install it, or use and init the source.
+install it, or use and init the source with `composer install`.
+
+***Warning***: browsers are removing the support of xslt: [Chrome stops it] from
+version 155 (November 2026) and Firefox and Safari will follow. The xsl
+stylesheets are no longer rendered in these browsers, but the css stylesheets
+are still supported.
 
 The `php-xsl` extension must be available, but it's by default in most linux
 distribution since a while.
@@ -86,7 +91,9 @@ be:
   iframe.
 
 The xml files whose media-type is not listed are rendered as a fallback download
-link.
+link. The media-types listed in the main settings are rendered by this module,
+unless another module renders them, for example the module Verovio for MEI. The
+files with the extension `xml` are always managed by this module.
 
 Some browsers manage xsl stylesheets differently in an iframe or in full page.
 For example, with Chrome, a stylesheet at the end of an xml file works in a
@@ -102,7 +109,8 @@ The css/xsl stylesheets are stored in the asset directory, so they can be
 overridden by any file with the same path in the theme.
 
 Furthermore, they may be overridden directly with an argument `render` in the url:
-https://example.org/s/my-site/xml/1?render=xsl/specific-xsl.xsl.
+https://example.org/s/my-site/xml/1?render=xsl/specific-xsl.xsl. For security,
+the argument accepts only the stylesheets set in settings and the asset ones.
 
 In the theme, the rendering can be done like that:
 
@@ -114,6 +122,8 @@ echo $xmlMedia->render(['url' => ['render' => 'xsl/my-specific.xsl']]);
 
 When external urls are used instead of assets, some security points should be
 checked.
+
+The files are read from the local file store only.
 
 #### https/https
 
@@ -154,8 +164,8 @@ XML files. And MusicXML has a offical second media-type in fact when not zipped,
 `application/vnd.recordare.musicxml+xml`.
 
 Normally, new files will have the right media-type if it is managed: see the
-list in the file [data/media-types/media-type-identifiers.php] that is used to
-identify them.
+list in the file [data/media-types/media-type-identifiers.php] of the module
+[Common] that is used to identify them.
 
 To normalize old files or other formats, you need the module [Bulk Edit] and to
 use the batch edit feature in item/browse and media/browse.
@@ -199,7 +209,7 @@ an error like "XML Parsing Error: junk after document element".
 In that case, put your Omeka server in production mode (`SetEnv APPLICATION_ENV "production"`
 in file `.htaccess`). Else disable `display_error` in your php config (file
 `php.ini` on your server, or with `php_flag display_startup_errors off` in `.htaccess`.
-Else (not recommended) add a `@` before `session_write_close();` line 235 of [`vendor/laminas/laminas-session/src/SessionManager.php`].
+Else (not recommended) add a `@` before `session_write_close();` line 235 of [vendor/laminas/laminas-session/src/SessionManager.php].
 
 
 TODO
@@ -258,7 +268,7 @@ Copyright
 
 Module [Xml Viewer] for Omeka S:
 
-* Copyright Daniel Berthereau, 2019-2023
+* Copyright Daniel Berthereau, 2018-2026 (see [Daniel-KM])
 
 First version of this module was built for the future digital library of [Association Valentin Haüy],
 with the help of the Observatoire des textes, des idées et des corpus [OBTIC] of
@@ -267,17 +277,17 @@ with the help of the Observatoire des textes, des idées et des corpus [OBTIC] o
 
 [XML Viewer]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer
 [Œuvre/Teinte]: https://github.com/oeuvres/teinte
+[Chrome stops it]: https://developer.chrome.com/docs/web-platform/deprecating-xslt
 [Omeka S]: https://omeka.org/s
+[Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
 [XmlViewer.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/releases
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
-[Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
-[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/issues
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/work_items
 [Alto]: https://www.loc.gov/standards/alto
 [Extract Text]: https://github.com/omeka-s-modules/ExtractText
-[Verovio Viewer]: https://gitlab.com/Daniel-KM/Omeka-S-module-Verovio
 [Bulk Edit]: https://gitlab.com/Daniel-KM/Omeka-S-module-BulkEdit
 [Next]: https://gitlab.com/Daniel-KM/Omeka-S-module-Next
-[data/media-types/media-type-identifiers.php]: https://gitlab.com/Daniel-KM/Omeka-S-module-XmlViewer/-/blob/master/data/media-types/media-type-identifiers.php
+[data/media-types/media-type-identifiers.php]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common/-/blob/master/data/media-types/media-type-identifiers.php
 [iana list]: https://www.iana.org/assignments/media-types/media-types.xhtml
 [Verovio]: https://gitlab.com/Daniel-KM/Omeka-S-module-Verovio
 [ViewerJs]: https://gitlab.com/Daniel-KM/Omeka-S-module-ViewerJs
