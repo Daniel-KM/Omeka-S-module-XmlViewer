@@ -60,6 +60,7 @@ class Module extends AbstractModule
     {
         parent::onBootstrap($event);
         $this->addAclRules();
+        $this->addFileRenderers();
     }
 
     protected function preInstall(): void
@@ -129,6 +130,29 @@ class Module extends AbstractModule
                     Controller\IndexController::class,
                 ]
             );
+    }
+
+    /**
+     * Render the xml media types set in main settings.
+     *
+     * The renderers of other modules are kept.
+     */
+    protected function addFileRenderers(): void
+    {
+        $services = $this->getServiceLocator();
+        $mediaTypes = array_keys($services->get('Omeka\Settings')->get('xmlviewer_renderings') ?: []);
+        if (!$mediaTypes) {
+            return;
+        }
+        /** @var \Omeka\Media\FileRenderer\Manager $fileRenderers */
+        $fileRenderers = $services->get('Omeka\Media\FileRenderer\Manager');
+        $fileRenderers->setAllowOverride(true);
+        foreach ($mediaTypes as $mediaType) {
+            if (!$fileRenderers->has($mediaType)) {
+                $fileRenderers->setInvokableClass((string) $mediaType, Media\FileRenderer\Xml::class);
+            }
+        }
+        $fileRenderers->setAllowOverride(false);
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
