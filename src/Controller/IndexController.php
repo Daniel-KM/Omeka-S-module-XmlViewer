@@ -193,11 +193,19 @@ class IndexController extends AbstractActionController
         foreach ($renderings as $rendering) {
             $allowed = array_merge($allowed, $this->stylesheets((string) $rendering));
         }
+        $requested = $this->stylesheets($render);
         $stylesheets = array_filter(
-            $this->stylesheets($render),
+            $requested,
             fn ($stylesheet) => in_array($stylesheet, $allowed, true)
                 || preg_match('~^[\w-]+(?:[/.][\w-]+)*\.(?:css|xslt?)$~', $stylesheet)
         );
+        $rejected = array_diff($requested, $stylesheets);
+        if ($rejected) {
+            $this->logger()->warn(
+                'XmlViewer: the stylesheets {stylesheets} set in the query are skipped: only the assets and the stylesheets set in settings are allowed.', // @translate
+                ['stylesheets' => implode(', ', $rejected)]
+            );
+        }
         return implode('|', $stylesheets);
     }
 
