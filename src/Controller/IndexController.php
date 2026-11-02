@@ -124,7 +124,7 @@ class IndexController extends AbstractActionController
         } elseif (!in_array($rendering, ['text', 'plain', 'text/plain', 'true'])) {
             $assetUrl = $this->viewHelpers()->get('assetUrl');
             foreach (array_filter(array_map('trim', explode('|', $rendering))) as $stylesheet) {
-                $extension = strtolower(pathinfo($rendering, PATHINFO_EXTENSION));
+                $extension = strtolower(pathinfo($stylesheet, PATHINFO_EXTENSION));
                 if (!in_array($extension, ['css', 'xsl', 'xslt'])) {
                     continue;
                 }
@@ -139,6 +139,15 @@ class IndexController extends AbstractActionController
             if ($piStylesheet) {
                 $contentMediaType = 'application/xml';
             }
+        }
+
+        // Without stylesheet, the file is sent as is.
+        if (!$piStylesheet) {
+            return $this->sendFile($filepath, [
+                'content_type' => $contentMediaType,
+                'filename' => $filename,
+                'cache' => 3600,
+            ]);
         }
 
         $dispositionMode = 'inline';
@@ -164,27 +173,23 @@ class IndexController extends AbstractActionController
             ob_end_clean();
         }
 
-        if ($piStylesheet) {
-            // file_get_contents and file_put_contents are not used to avoid
-            // memory issue with big xml files.
-            // TODO Check XmlWriter?
-            $handle = fopen($filepath, 'rb');
-            $content = fread($handle, 8192);
-            $pos = mb_strpos($content, '>');
-            // A xml file without a ">" in the first 8192 bytes does not exist.
-            if ($pos === false) {
-                fclose($handle);
-                readfile($filepath);
-            } else {
-                $length = $pos + 1;
-                rewind($handle);
-                echo fread($handle, $length);
-                echo $piStylesheet;
-                echo fread($handle, $filesize - $length);
-                fclose($handle);
-            }
-        } else {
+        // file_get_contents and file_put_contents are not used to avoid memory
+        // issue with big xml files. The position is in bytes, like the reads.
+        // TODO Check XmlWriter?
+        $handle = fopen($filepath, 'rb');
+        $content = fread($handle, 8192);
+        $pos = strpos($content, '>');
+        // A xml file without a ">" in the first 8192 bytes does not exist.
+        if ($pos === false) {
+            fclose($handle);
             readfile($filepath);
+        } else {
+            $length = $pos + 1;
+            rewind($handle);
+            echo fread($handle, $length);
+            echo $piStylesheet;
+            echo fread($handle, $filesize - $length);
+            fclose($handle);
         }
 
         // TODO Fix issue with session. See readme.
