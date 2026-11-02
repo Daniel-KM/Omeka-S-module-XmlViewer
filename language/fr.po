@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-09 00:00+0000\n"
+"POT-Creation-Date: 2026-11-02 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: \n"
@@ -17,20 +17,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.6\n"
 
-#: data/scripts/upgrade.php:29 Module.php:70
+#: data/scripts/upgrade.php:29 Module.php:92
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
 
-#: Module.php:79
+#: data/scripts/upgrade.php:33
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Pré-requis absent. Impossible de mettre à jour."
+
+#: data/scripts/upgrade.php:59
+msgid ""
+"Browsers are removing the support of xslt: Chrome stops it from version 155 "
+"(November 2026) and Firefox and Safari will follow. The xsl stylesheets are "
+"no longer rendered in these browsers, but the css stylesheets are still "
+"supported."
+msgstr ""
+"Les navigateurs abandonnent la prise en charge de xslt : Chrome l’arrête à "
+"partir de la version 155 (novembre 2026), et Firefox et Safari suivront. Les "
+"feuilles de style xsl ne sont plus rendues dans ces navigateurs, mais les "
+"feuilles de style css restent prises en charge."
+
+#: Module.php:100
 msgid "The module requires the php extension \"xsl\"."
 msgstr "Ce module nécessite l'extension php \"xsl\"."
 
-#: Module.php:80
+#: Module.php:101
 msgid "See module’s installation documentation."
 msgstr "Voir la documentation d’installation du module."
 
-#: Module.php:91
+#: Module.php:115
 msgid ""
 "To render xml, map each specific xml media-type with a css or xsl in "
 "settings and site settings."
@@ -39,7 +55,7 @@ msgstr ""
 "avec un css ou une xsl dans les paramètres globaux et dans les paramètres de "
 "site."
 
-#: Module.php:97
+#: Module.php:126
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
 "instead of \"application/xml\", batch edit them."
@@ -47,7 +63,7 @@ msgstr ""
 "Pour indiquer un média-type xml précis, par exemple « application/tei+xml » "
 "au lieu de « application/xml », lancer un traitement en lot."
 
-#: Module.php:101
+#: Module.php:130
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
 "instead of \"application/xml\", batch edit them with module {link}Bulk "
@@ -82,25 +98,34 @@ msgstr ""
 "xml seront rendus comme un lien de téléchargement. Vous pouvez également "
 "indiquer des médias-types précis avec le module Bulk Edit."
 
-#: src/Controller/IndexController.php:36
+#: src/Controller/IndexController.php:39
 #, php-format
 msgid "Media #%s is not a file."
 msgstr "Le média #%s n’est pas un fichier."
 
-#: src/Controller/IndexController.php:43
+#: src/Controller/IndexController.php:46
 #, php-format
 msgid "Media #%s has no original file."
 msgstr "Le média #%s n’a pas de fichier original."
 
-#: src/Controller/IndexController.php:51
+#: src/Controller/IndexController.php:54
 #, php-format
 msgid "Media #%s has no original file url."
 msgstr "Le média #%s n’a pas d’url pour le fichier original."
 
-#: src/Controller/IndexController.php:60
+#: src/Controller/IndexController.php:63
 #, php-format
 msgid "Media #%s has no readable file."
 msgstr "Le média #%s n’a pas fichier lisible."
+
+#: src/Controller/IndexController.php:205
+msgid ""
+"XmlViewer: the stylesheets {stylesheets} set in the query are skipped: only "
+"the assets and the stylesheets set in settings are allowed."
+msgstr ""
+"XmlViewer : les feuilles de style {stylesheets} définies dans la requête "
+"sont ignorées : seuls les assets et les feuilles de style définies dans les "
+"réglages sont autorisés."
 
 #, php-format
 #~ msgid "This module requires the module \"%s\"."

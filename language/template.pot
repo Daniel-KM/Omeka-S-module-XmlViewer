@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-09 00:00+0000\n"
+"POT-Creation-Date: 2026-11-02 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,32 +17,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/scripts/upgrade.php:29 Module.php:70
+#: data/scripts/upgrade.php:29 Module.php:92
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr ""
 
-#: Module.php:79
+#: data/scripts/upgrade.php:33
+msgid "Missing requirement. Unable to upgrade."
+msgstr ""
+
+#: data/scripts/upgrade.php:59
+msgid ""
+"Browsers are removing the support of xslt: Chrome stops it from version 155 "
+"(November 2026) and Firefox and Safari will follow. The xsl stylesheets are "
+"no longer rendered in these browsers, but the css stylesheets are still "
+"supported."
+msgstr ""
+
+#: Module.php:100
 msgid "The module requires the php extension \"xsl\"."
 msgstr ""
 
-#: Module.php:80
+#: Module.php:101
 msgid "See module’s installation documentation."
 msgstr ""
 
-#: Module.php:91
+#: Module.php:115
 msgid ""
 "To render xml, map each specific xml media-type with a css or xsl in "
 "settings and site settings."
 msgstr ""
 
-#: Module.php:97
+#: Module.php:126
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
 "instead of \"application/xml\", batch edit them."
 msgstr ""
 
-#: Module.php:101
+#: Module.php:130
 msgid ""
 "To specify a precise xml media-type, for example \"application/tei+xml\" "
 "instead of \"application/xml\", batch edit them with module {link}Bulk "
@@ -69,22 +81,28 @@ msgid ""
 "precise media-types with module Bulk Edit too."
 msgstr ""
 
-#: src/Controller/IndexController.php:36
+#: src/Controller/IndexController.php:39
 #, php-format
 msgid "Media #%s is not a file."
 msgstr ""
 
-#: src/Controller/IndexController.php:43
+#: src/Controller/IndexController.php:46
 #, php-format
 msgid "Media #%s has no original file."
 msgstr ""
 
-#: src/Controller/IndexController.php:51
+#: src/Controller/IndexController.php:54
 #, php-format
 msgid "Media #%s has no original file url."
 msgstr ""
 
-#: src/Controller/IndexController.php:60
+#: src/Controller/IndexController.php:63
 #, php-format
 msgid "Media #%s has no readable file."
+msgstr ""
+
+#: src/Controller/IndexController.php:205
+msgid ""
+"XmlViewer: the stylesheets {stylesheets} set in the query are skipped: only "
+"the assets and the stylesheets set in settings are allowed."
 msgstr ""
