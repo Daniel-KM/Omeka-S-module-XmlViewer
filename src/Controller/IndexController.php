@@ -171,6 +171,9 @@ class IndexController extends AbstractActionController
         fpassthru($handle);
         fclose($handle);
 
+        // Avoid to append a warning about session to the xml on shutdown.
+        ini_set('display_errors', '0');
+
         // Return response to avoid default view rendering and to manage events.
         return $response;
     }
