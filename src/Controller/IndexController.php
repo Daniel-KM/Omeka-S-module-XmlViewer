@@ -2,6 +2,7 @@
 
 namespace XmlViewer\Controller;
 
+use Common\Stdlib\TextTransliterator;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Omeka\File\Exception\InvalidArgumentException;
@@ -9,6 +10,8 @@ use Omeka\Stdlib\Message;
 
 class IndexController extends AbstractActionController
 {
+    const TEXT_RENDERINGS = ['text', 'plain', 'text/plain', 'true'];
+
     /**
      * @var string
      */
@@ -66,20 +69,22 @@ class IndexController extends AbstractActionController
         $renderings = $siteSlug
            ? $this->siteSettings()->get('xmlviewer_renderings', [])
            : $this->settings()->get('xmlviewer_renderings', []);
-        $mediaType = $resource->mediaType();
-        $rendering = $renderings[$mediaType] ?? '';
-        $filesize = (int) $resource->size();
+        $mediaType = (string) $resource->mediaType();
+        $rendering = trim((string) ($renderings[$mediaType] ?? ''));
+        $filesize = (int) filesize($filepath);
 
         $render = $this->params()->fromQuery('render');
+        if (is_array($render)) {
+            $render = implode('|', array_filter($render, 'is_string'));
+        }
+        $render = is_string($render) ? trim($render) : '';
 
-        if (empty($filesize)
+        if (!$filesize
             || !$mediaType
             // For security, there should be a default rendering even when a
             // render is set in the query.
-            || empty($rendering)
-            || $rendering === 'false'
-            || $rendering === 'no'
-            || (!empty($render) && in_array($render, ['false', 'no']))
+            || in_array($rendering, ['', 'false', 'no'], true)
+            || in_array($render, ['false', 'no'], true)
         ) {
             $view = new ViewModel([
                 'resource' => $resource,
@@ -91,26 +96,14 @@ class IndexController extends AbstractActionController
                 ->setTerminal(true);
         }
 
-        // Check render.
-        if ($render) {
-            if (is_array($render)) {
-                $render = implode('|', $render);
-            }
-            $rendering = $render;
+        if ($render !== '') {
+            $rendering = $this->checkRender($render, $renderings) ?: $rendering;
         }
 
         // In order to be displayed as xml in an iframe, the content-type should
         // be "text/plain". "text/html" skips the xml instructions. "text/xml" or
         // "application/xml" are silently read like html, even if it works in a
         // full page, except with a stylesheet xsl.
-
-        // With Chrome, a stylesheet at the end of an xml file works in a iframe,
-        // but not in full page, so the stylesheet should be inserted after the
-        // xml header. But the length of the header is not fixed, there may be
-        // spaces, not utf-8, etc.
-
-        // So if there is no memory issue (check length), it should be added at
-        // the position of the first ">".
 
         $filename = $resource->source() ?: basename($filepath);
 
@@ -121,20 +114,18 @@ class IndexController extends AbstractActionController
             // systems force downloading for precise xml media-types.
             // "text/xml" and "application/xml" are synonymous for browsers.
             $contentMediaType = 'application/xml';
-        } elseif (!in_array($rendering, ['text', 'plain', 'text/plain', 'true'])) {
+        } elseif (!in_array($rendering, self::TEXT_RENDERINGS, true)) {
             $assetUrl = $this->viewHelpers()->get('assetUrl');
-            foreach (array_filter(array_map('trim', explode('|', $rendering))) as $stylesheet) {
+            foreach ($this->stylesheets($rendering) as $stylesheet) {
                 $extension = strtolower(pathinfo($stylesheet, PATHINFO_EXTENSION));
-                if (!in_array($extension, ['css', 'xsl', 'xslt'])) {
-                    continue;
-                }
-                if (substr($stylesheet, 0, 1) !== '/'
-                    && substr($stylesheet, 0, 8) !== 'https://'
-                    && substr($stylesheet, 0, 7) !== 'http://'
-                ) {
+                if (!$this->isUrl($stylesheet)) {
                     $stylesheet = $assetUrl($stylesheet, 'XmlViewer', true);
                 }
-                $piStylesheet .= sprintf("\n" . '<?xml-stylesheet type="text/%s" href="%s" ?>', $extension === 'xslt' ? 'xsl' : $extension, $stylesheet);
+                $piStylesheet .= sprintf(
+                    "\n" . '<?xml-stylesheet type="text/%s" href="%s" ?>',
+                    $extension === 'css' ? 'css' : 'xsl',
+                    htmlspecialchars($stylesheet, ENT_QUOTES | ENT_XML1)
+                );
             }
             if ($piStylesheet) {
                 $contentMediaType = 'application/xml';
@@ -150,22 +141,20 @@ class IndexController extends AbstractActionController
             ]);
         }
 
-        $dispositionMode = 'inline';
+        $filename = strtr($filename, ["\r" => '', "\n" => '', "\0" => '', '"' => '']);
+        $filenameAscii = TextTransliterator::toAsciiFilename($filename);
 
         /** @var \Laminas\Http\PhpEnvironment\Response $response */
         $response = $this->getResponse();
-        // Write headers.
         $response->getHeaders()
             ->addHeaderLine(sprintf('Content-Type: %s', $contentMediaType))
-            ->addHeaderLine(sprintf('Content-Disposition: %s; filename="%s"', $dispositionMode, $filename))
+            ->addHeaderLine($filenameAscii === $filename
+                ? sprintf('Content-Disposition: inline; filename="%s"', $filename)
+                : sprintf("Content-Disposition: inline; filename=\"%s\"; filename*=UTF-8''%s", $filenameAscii, rawurlencode($filename)))
             ->addHeaderLine(sprintf('Content-Length: %s', $filesize + strlen($piStylesheet)))
-            ->addHeaderLine('Content-Transfer-Encoding', 'binary')
-            // Use this to open files directly.
             ->addHeaderLine('Cache-Control: private');
         // Send headers separately to handle large files.
         $response->sendHeaders();
-
-        // TODO Use Laminas stream response.
 
         // Clears all active output buffers to avoid memory overflow.
         $response->setContent('');
@@ -173,29 +162,72 @@ class IndexController extends AbstractActionController
             ob_end_clean();
         }
 
-        // file_get_contents and file_put_contents are not used to avoid memory
-        // issue with big xml files. The position is in bytes, like the reads.
-        // TODO Check XmlWriter?
+        // The stylesheet should be inside the prolog, so after the xml
+        // declaration if any. The file is streamed to avoid memory issues.
         $handle = fopen($filepath, 'rb');
-        $content = fread($handle, 8192);
-        $pos = strpos($content, '>');
-        // A xml file without a ">" in the first 8192 bytes does not exist.
-        if ($pos === false) {
-            fclose($handle);
-            readfile($filepath);
-        } else {
-            $length = $pos + 1;
-            rewind($handle);
-            echo fread($handle, $length);
-            echo $piStylesheet;
-            echo fread($handle, $filesize - $length);
-            fclose($handle);
-        }
-
-        // TODO Fix issue with session. See readme.
-        ini_set('display_errors', '0');
+        $head = (string) fread($handle, 8192);
+        $position = $this->prologPosition($head);
+        echo substr($head, 0, $position), $piStylesheet, substr($head, $position);
+        fpassthru($handle);
+        fclose($handle);
 
         // Return response to avoid default view rendering and to manage events.
         return $response;
+    }
+
+    /**
+     * Keep only the safe renderings set in the query.
+     *
+     * A query can use any rendering set in settings, but only local assets as
+     * stylesheet, to avoid injection of remote stylesheets.
+     */
+    protected function checkRender(string $render, array $renderings): string
+    {
+        if (in_array($render, self::TEXT_RENDERINGS, true) || $render === 'original') {
+            return $render;
+        }
+        $allowed = [];
+        foreach ($renderings as $rendering) {
+            $allowed = array_merge($allowed, $this->stylesheets((string) $rendering));
+        }
+        $stylesheets = array_filter(
+            $this->stylesheets($render),
+            fn ($stylesheet) => in_array($stylesheet, $allowed, true)
+                || preg_match('~^[\w-]+(?:[/.][\w-]+)*\.(?:css|xslt?)$~', $stylesheet)
+        );
+        return implode('|', $stylesheets);
+    }
+
+    /**
+     * Get the list of stylesheets (css, xsl, xslt) of a rendering.
+     */
+    protected function stylesheets(string $rendering): array
+    {
+        return array_values(array_filter(
+            array_map('trim', explode('|', $rendering)),
+            fn ($stylesheet) => in_array(strtolower(pathinfo($stylesheet, PATHINFO_EXTENSION)), ['css', 'xsl', 'xslt'], true)
+        ));
+    }
+
+    protected function isUrl(string $stylesheet): bool
+    {
+        return substr($stylesheet, 0, 1) === '/'
+            || substr($stylesheet, 0, 8) === 'https://'
+            || substr($stylesheet, 0, 7) === 'http://';
+    }
+
+    /**
+     * Get the position where a processing instruction can be inserted.
+     *
+     * The position is after the byte order mark and the xml declaration if any.
+     */
+    protected function prologPosition(string $head): int
+    {
+        $start = strncmp($head, "\xEF\xBB\xBF", 3) === 0 ? 3 : 0;
+        if (!preg_match('~\G<\?xml\s~', $head, $matches, 0, $start)) {
+            return $start;
+        }
+        $end = strpos($head, '?>', $start);
+        return $end === false ? $start : $end + 2;
     }
 }
