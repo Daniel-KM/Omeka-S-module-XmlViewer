@@ -53,6 +53,7 @@ class Xml implements RendererInterface
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = [])
     {
         $plugins = $view->getHelperPluginManager();
+        $escapeAttr = $plugins->get('escapeHtmlAttr');
 
         $status = $view->status();
         if ($status->isSiteRequest()) {
@@ -60,7 +61,6 @@ class Xml implements RendererInterface
             if (empty($options['attributes'])) {
                 $options['attributes'] = $this->defaultOptions['attributes'];
             } else {
-                $escapeAttr = $plugins->get('escapeHtmlAttr');
                 foreach ($options['attributes'] as $name => $value) {
                     if ($value === false || preg_match('/[^\w:.-]/', $name)) {
                         unset($options['attributes'][$name]);
@@ -83,9 +83,10 @@ class Xml implements RendererInterface
 
         $options['attributes']['id'] = 'xml-viewer-' . $media->id();
 
-        $options['attributes']['src'] = empty($options['url']['original'])
+        $options['attributes']['src'] = $escapeAttr(empty($options['url']['original'])
             ? $plugins->get('urlPlainTextFile')->__invoke($media, $options['url'] ?? [])
-            : $media->originalUrl();
+            : $media->originalUrl());
+        $options['attributes']['title'] ??= $escapeAttr($media->displayTitle());
         unset($options['url']);
 
         $mediaType = (string) $media->mediaType();
