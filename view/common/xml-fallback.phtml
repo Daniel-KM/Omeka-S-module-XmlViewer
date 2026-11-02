@@ -9,6 +9,16 @@
  */
 
 // Default output when the xml specific media-type is not managed.
+$escape = $this->plugin('escapeHtml');
+$title = $media->displayTitle();
 ?>
-
-<?= $this->hyperlink($media->filename(), $media->originalUrl(), ['type' => $media->mediaType(), 'target' => '_blank']) ?>
+<!DOCTYPE html>
+<html lang="<?= $escape($this->lang()) ?>">
+<head>
+    <meta charset="utf-8">
+    <title><?= $escape($title) ?></title>
+</head>
+<body>
+    <?= $this->hyperlink($media->filename(), $media->originalUrl(), ['type' => $media->mediaType(), 'target' => '_blank']) ?>
+</body>
+</html>
